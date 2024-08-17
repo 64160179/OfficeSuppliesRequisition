@@ -86,7 +86,7 @@ const FormAddUser = () => {
                             </div>
 
                             <div style={{ display: 'flex', gap: '10px' }}>
-                                <div className="field">
+                                <div className="field" style={{ flex: 1 }}>
                                     <label className="label">รหัสผ่าน</label>
                                     <div className="control has-icons-right">
                                         <input className="input"
@@ -108,7 +108,7 @@ const FormAddUser = () => {
                                     </div>
                                 </div>
 
-                                <div className="field">
+                                <div className="field" style={{ flex: 1 }}>
                                     <label className="label">ยืนยันรหัสผ่าน</label>
                                     <div className="control has-icons-right">
                                         <input className="input"
@@ -131,21 +131,6 @@ const FormAddUser = () => {
                                 </div>
                             </div>
 
-                            <div className="field">
-                                <label className="label">Role</label>
-                                <div className="control">
-                                    <div className="select is-fullwidth">
-                                        <select
-                                            value={role}
-                                            onChange={(e) => setRole(e.target.value)}
-                                        >
-                                            <option value="">กรุณาเลือกสิทธิ์การใช้งาน</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="user">User</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                             <br />
                             <div className="field">
                                 <div className="control">
