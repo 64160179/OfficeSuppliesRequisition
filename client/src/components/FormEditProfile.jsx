@@ -140,7 +140,7 @@ const FormEditProfile = () => {
                                         className="input"
                                         value={email}
                                         onChange={handleFieldChange(setEmail)}
-                                        placeholder="Email"
+                                        placeholder="อีเมล (มหาวิทยาลัย)"
                                     />
                                 </div>
                             </div>
