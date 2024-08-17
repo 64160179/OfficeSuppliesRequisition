@@ -97,7 +97,7 @@ const ProductList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentProducts.map((product, index) => (
+                    {currentProducts.map((product) => (
                         <tr key={product.uuid}>
                             {user && user.role === "admin" && (
                                 <td className="has-text-centered">
@@ -110,7 +110,7 @@ const ProductList = () => {
                                 </td>
                             )}
                             <td>{indexOfFirstItem + product.id}</td>
-                            <td></td>
+                            <td>{product.code}</td>
                             <td>{product.name}</td>
                             <td>{product.unit}</td>
                             <td>{product.quantity}</td>

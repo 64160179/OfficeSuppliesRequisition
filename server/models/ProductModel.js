@@ -13,6 +13,11 @@ const Products = db.define('products',{
             notEmpty: true
         }
     },
+    code: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
+    },
     name:{
         type: DataTypes.STRING,
         allowNull: false,
