@@ -125,7 +125,7 @@ export const editProfile = async (req, res) => {
     });
     if (!user) return res.status(404).json({ msg: "ไม่พบผู้ใข้ !" });
 
-    const { fname, email, password, confPassword } = req.body;
+    const { fname, lname, email, password, confPassword } = req.body;
     let updateFields = {};
 
     if (email && email !== user.email) {
@@ -138,6 +138,10 @@ export const editProfile = async (req, res) => {
         const existingUserByName = await User.findOne({ where: { fname } });
         if (existingUserByName) return res.status(400).json({ msg: "ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว !" });
         updateFields.fname = fname;
+    }
+
+    if (lname && lname !== user.lname) {
+        updateFields.lname = lname;
     }
 
     if (password) {

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Icon from 'react-icons-kit';
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../features/authSlice";
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { arrows_exclamation } from 'react-icons-kit/linea/arrows_exclamation';
+import { arrows_circle_check } from 'react-icons-kit/linea/arrows_circle_check';
 
 const FormEditProfile = () => {
     const [fname, setfName] = useState("");
@@ -17,6 +20,16 @@ const FormEditProfile = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const [showPassword, setShowPassword] = useState(false);
+
+    // validated states
+    const [lowerValidated, setLowerValidated] = useState(false);
+    const [upperValidated, setUpperValidated] = useState(false);
+    const [numberValidated, setNumberValidated] = useState(false);
+    const [specialValidated, setSpecialValidated] = useState(false);
+    const [lengthValidated, setLengthValidated] = useState(false);
+
+    // state to track changes
+    const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
         const getMeById = async () => {
@@ -34,27 +47,50 @@ const FormEditProfile = () => {
         getMeById();
     }, [id]);
 
-    const editUser = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.patch(`http://localhost:5000/editprofile/${id}`, {
-                fname: fname,
-                lname: lname,
-                email: email,
-                password: password,
-                confPassword: confPassword,
-            });
-            dispatch(updateUser({ fname, lname, email }));
-            navigate("/home");
-        } catch (error) {
-            if (error.response) {
-                setMsg(error.response.data.msg);
-            }
-        }
+    const handleChange = (value) => {
+        const lower = new RegExp('(?=.*[a-z])');
+        const upper = new RegExp('(?=.*[A-Z])');
+        const number = new RegExp('(?=.*[0-9])');
+        const special = new RegExp('(?=.*[!@#$%^&*])'); // Removed unnecessary escape characters
+        const length = new RegExp('(?=.{8,})');
+        setLowerValidated(lower.test(value));
+        setUpperValidated(upper.test(value));
+        setNumberValidated(number.test(value));
+        setSpecialValidated(special.test(value));
+        setLengthValidated(length.test(value));
+        setIsChanged(true); // Mark as changed when password is modified
+    };
+
+    const handleFieldChange = (setter) => (e) => {
+        setter(e.target.value);
+        setIsChanged(true); // Mark as changed when any field is modified
     };
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
+    };
+
+    const editUser = async (e) => {
+        e.preventDefault();
+        if (isChanged && (password === "" || (lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))) {
+            try {
+                await axios.patch(`http://localhost:5000/editprofile/${id}`, {
+                    fname: fname,
+                    lname: lname,
+                    email: email,
+                    password: password,
+                    confPassword: confPassword,
+                });
+                dispatch(updateUser({ fname, lname, email }));
+                navigate("/home");
+            } catch (error) {
+                if (error.response) {
+                    setMsg(error.response.data.msg);
+                }
+            }
+        } else {
+            setMsg("Please make sure all fields are valid.");
+        }
     };
 
     return (
@@ -75,8 +111,8 @@ const FormEditProfile = () => {
                                             type="text"
                                             className="input"
                                             value={fname}
-                                            onChange={(e) => setfName(e.target.value)}
-                                            placeholder="Name"
+                                            onChange={handleFieldChange(setfName)}
+                                            placeholder="ชื่อจริง"
                                         />
                                     </div>
                                 </div>
@@ -89,8 +125,8 @@ const FormEditProfile = () => {
                                             type="text"
                                             className="input"
                                             value={lname}
-                                            onChange={(e) => setlName(e.target.value)}
-                                            placeholder="Name"
+                                            onChange={handleFieldChange(setlName)}
+                                            placeholder="นามสกุล"
                                         />
                                     </div>
                                 </div>
@@ -103,7 +139,7 @@ const FormEditProfile = () => {
                                         type="text"
                                         className="input"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={handleFieldChange(setEmail)}
                                         placeholder="Email"
                                     />
                                 </div>
@@ -116,9 +152,11 @@ const FormEditProfile = () => {
                                         <input className="input"
                                             type={showPassword ? "text" : "password"}
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            onChange={(e) => {
+                                                setPassword(e.target.value)
+                                                handleChange(e.target.value)
+                                            }}
                                             placeholder="**********"
-                                            required
                                         />
                                         <button onClick={toggleShowPassword} type="button" style={{
                                             position: 'absolute',
@@ -141,7 +179,6 @@ const FormEditProfile = () => {
                                             value={confPassword}
                                             onChange={(e) => setConfPassword(e.target.value)}
                                             placeholder="**********"
-                                            required
                                         />
                                         <button onClick={toggleShowPassword} type="button" style={{
                                             position: 'absolute',
@@ -156,10 +193,103 @@ const FormEditProfile = () => {
                                     </div>
                                 </div>
                             </div>
+                            <style>
+                                {`
+                                .tracker-box {
+                                    background-color: #f9f9f9;
+                                    border: 1px solid #ddd;
+                                    border-radius: 5px;
+                                    padding: 15px;
+                                    margin-top: 20px;
+                                }
+                                .tracker-box .validated {
+                                    color: green;
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 10px;
+                                }
+                                .tracker-box .not-validated {
+                                    color: red;
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 10px;
+                                }
+                                .tracker-box .list-icon {
+                                    margin-right: 10px;
+                                }
+                                .tracker-box .list-icon.green {
+                                    color: green;
+                                }
+                                `}
+                            </style>
+                            <main className='tracker-box'>
+                                <div className={lowerValidated ? 'validated' : 'not-validated'}>
+                                    {lowerValidated ? (
+                                        <span className='list-icon green'>
+                                            <Icon icon={arrows_circle_check} />
+                                        </span>
+                                    ) : (
+                                        <span className='list-icon'>
+                                            <Icon icon={arrows_exclamation} />
+                                        </span>
+                                    )}
+                                    At least one lowercase letter
+                                </div>
+                                <div className={upperValidated ? 'validated' : 'not-validated'}>
+                                    {upperValidated ? (
+                                        <span className='list-icon green'>
+                                            <Icon icon={arrows_circle_check} />
+                                        </span>
+                                    ) : (
+                                        <span className='list-icon'>
+                                            <Icon icon={arrows_exclamation} />
+                                        </span>
+                                    )}
+                                    At least one uppercase letter
+                                </div>
+                                <div className={numberValidated ? 'validated' : 'not-validated'}>
+                                    {numberValidated ? (
+                                        <span className='list-icon green'>
+                                            <Icon icon={arrows_circle_check} />
+                                        </span>
+                                    ) : (
+                                        <span className='list-icon'>
+                                            <Icon icon={arrows_exclamation} />
+                                        </span>
+                                    )}
+                                    At least one number
+                                </div>
+                                <div className={specialValidated ? 'validated' : 'not-validated'}>
+                                    {specialValidated ? (
+                                        <span className='list-icon green'>
+                                            <Icon icon={arrows_circle_check} />
+                                        </span>
+                                    ) : (
+                                        <span className='list-icon'>
+                                            <Icon icon={arrows_exclamation} />
+                                        </span>
+                                    )}
+                                    At least one special character
+                                </div>
+                                <div className={lengthValidated ? 'validated' : 'not-validated'}>
+                                    {lengthValidated ? (
+                                        <span className='list-icon green'>
+                                            <Icon icon={arrows_circle_check} />
+                                        </span>
+                                    ) : (
+                                        <span className='list-icon'>
+                                            <Icon icon={arrows_exclamation} />
+                                        </span>
+                                    )}
+                                    At least 8 characters
+                                </div>
+                            </main>
                             <br />
                             <div className="field">
                                 <div className="control">
-                                    <button type="submit" className="button is-success">
+                                    <button type="submit" className="button is-success"
+                                    disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
+                                    >
                                         ยืนยันการแก้ไข
                                     </button>
                                 </div>
@@ -169,6 +299,7 @@ const FormEditProfile = () => {
                 </div>
             </div>
         </div>
+
     )
 }
 
