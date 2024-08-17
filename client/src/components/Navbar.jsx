@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../asset/logo.png";
 import { useDispatch } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
-
-import { IoLogOut   } from "react-icons/io5";
+import { IoLogOut } from "react-icons/io5";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [isActive, setIsActive] = useState(false);
 
   const logout = () => {
     dispatch(LogOut());
     dispatch(reset());
     navigate("/");
+  };
+
+  const toggleBurger = () => {
+    setIsActive(!isActive);
   };
 
   return (
@@ -30,12 +33,13 @@ const Navbar = () => {
           </NavLink>
 
           <a
-            href="!#"
+            href="#!"
             role="button"
-            className="navbar-burger burger"
+            className={`navbar-burger burger ${isActive ? "is-active" : ""}`}
             aria-label="menu"
-            aria-expanded="false"
+            aria-expanded={isActive ? "true" : "false"}
             data-target="navbarBasicExample"
+            onClick={toggleBurger}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -43,12 +47,16 @@ const Navbar = () => {
           </a>
         </div>
 
-        <div id="navbarBasicExample" className="navbar-menu">
+        <div
+          id="navbarBasicExample"
+          className={`navbar-menu ${isActive ? "is-active" : ""}`}
+        >
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <button onClick={logout} className="button is-light">
-                  <IoLogOut />Log out
+                <button className="button is-light" onClick={logout}>
+                  <IoLogOut />
+                  <span>Logout</span>
                 </button>
               </div>
             </div>

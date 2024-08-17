@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Icon from 'react-icons-kit';
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../features/authSlice";
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { arrows_exclamation } from 'react-icons-kit/linea/arrows_exclamation';
-import { arrows_circle_check } from 'react-icons-kit/linea/arrows_circle_check';
+import { MdError, MdCheckCircle } from 'react-icons/md'; // จาก Material Design
 
 const FormEditProfile = () => {
     const [fname, setfName] = useState("");
@@ -84,11 +82,6 @@ const FormEditProfile = () => {
 
     const editUser = async (e) => {
         e.preventDefault();
-        // ตรวจสอบความถูกต้องของรหัสผ่านก่อนบันทึก
-        if (!lowerValidated || !upperValidated || !numberValidated || !specialValidated || !lengthValidated) {
-            setMsg('รหัสผ่านไม่ตรงตามเงื่อนไขที่กำหนด');
-            return;
-        }
         try {
             await axios.patch(`http://localhost:5000/editprofile/${id}`, {
                 fname: fname,
@@ -239,11 +232,11 @@ const FormEditProfile = () => {
                                 <div className={lowerValidated ? 'validated' : 'not-validated'}>
                                     {lowerValidated ? (
                                         <span className='list-icon green'>
-                                            <Icon icon={arrows_circle_check} />
+                                            <MdCheckCircle />
                                         </span>
                                     ) : (
                                         <span className='list-icon'>
-                                            <Icon icon={arrows_exclamation} />
+                                            <MdError />
                                         </span>
                                     )}
                                     ตัวอักษรภาษาอังกฤษพิมพ์เล็กอย่างน้อย 1 ตัว
@@ -251,11 +244,11 @@ const FormEditProfile = () => {
                                 <div className={upperValidated ? 'validated' : 'not-validated'}>
                                     {upperValidated ? (
                                         <span className='list-icon green'>
-                                            <Icon icon={arrows_circle_check} />
+                                            <MdCheckCircle />
                                         </span>
                                     ) : (
                                         <span className='list-icon'>
-                                            <Icon icon={arrows_exclamation} />
+                                            <MdError />
                                         </span>
                                     )}
                                     ตัวอักษรภาษาอังกฤษพิมพ์ใหญ่อย่างน้อย 1 ตัว
@@ -263,11 +256,11 @@ const FormEditProfile = () => {
                                 <div className={numberValidated ? 'validated' : 'not-validated'}>
                                     {numberValidated ? (
                                         <span className='list-icon green'>
-                                            <Icon icon={arrows_circle_check} />
+                                            <MdCheckCircle />
                                         </span>
                                     ) : (
                                         <span className='list-icon'>
-                                            <Icon icon={arrows_exclamation} />
+                                            <MdError />
                                         </span>
                                     )}
                                     ตัวเลข 0-9 อย่างน้อย 1 ตัว
@@ -275,11 +268,11 @@ const FormEditProfile = () => {
                                 <div className={specialValidated ? 'validated' : 'not-validated'}>
                                     {specialValidated ? (
                                         <span className='list-icon green'>
-                                            <Icon icon={arrows_circle_check} />
+                                            <MdCheckCircle />
                                         </span>
                                     ) : (
                                         <span className='list-icon'>
-                                            <Icon icon={arrows_exclamation} />
+                                            <MdError />
                                         </span>
                                     )}
                                     ตัวอักษรพิเศษอย่างน้อย 1 ตัว (! @ # $ % ^ & * .) 
@@ -287,11 +280,11 @@ const FormEditProfile = () => {
                                 <div className={lengthValidated ? 'validated' : 'not-validated'}>
                                     {lengthValidated ? (
                                         <span className='list-icon green'>
-                                            <Icon icon={arrows_circle_check} />
+                                            <MdCheckCircle />
                                         </span>
                                     ) : (
                                         <span className='list-icon'>
-                                            <Icon icon={arrows_exclamation} />
+                                            <MdError />
                                         </span>
                                     )}
                                     มีความยาวมากกว่า 8 ตัวอักษร

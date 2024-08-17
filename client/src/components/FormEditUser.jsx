@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Icon from 'react-icons-kit';
 import { useNavigate, useParams } from "react-router-dom";
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { arrows_exclamation } from 'react-icons-kit/linea/arrows_exclamation';
-import { arrows_circle_check } from 'react-icons-kit/linea/arrows_circle_check';
+import { MdError, MdCheckCircle } from 'react-icons/md'; // จาก Material Design
 
 const FormEditUser = () => {
   const [fname, setfName] = useState("");
@@ -83,11 +81,6 @@ const FormEditUser = () => {
 
   const updateUser = async (e) => {
     e.preventDefault();
-    // ตรวจสอบความถูกต้องของรหัสผ่านก่อนบันทึก
-    if (!lowerValidated || !upperValidated || !numberValidated || !specialValidated || !lengthValidated) {
-      setMsg('รหัสผ่านไม่ตรงตามเงื่อนไขที่กำหนด');
-      return;
-    }
     try {
       await axios.patch(`http://localhost:5000/users/${id}`, {
         fname: fname,
@@ -103,128 +96,126 @@ const FormEditUser = () => {
         setMsg(error.response.data.msg);
       }
     }
-};
+  };
 
-return (
-  <div>
-    <br />
-    <h1 className="title">ตั้งค่าผู้ใช้</h1>
+  return (
+    <div>
+      <br />
+      <h1 className="title">ตั้งค่าผู้ใช้</h1>
 
-    <div className="card is-shadowless">
-      <div className="card-content">
-        <div className="content">
-          <form onSubmit={updateUser}>
-            <p className="has-text-centered"><strong style={{ color: 'red' }}>{msg}</strong></p>
+      <div className="card is-shadowless">
+        <div className="card-content">
+          <div className="content">
+            <form onSubmit={updateUser}>
+              <p className="has-text-centered"><strong style={{ color: 'red' }}>{msg}</strong></p>
 
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <div className="field" style={{ flex: 1 }}>
-                <label className="label">ชื่อจริง</label>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <div className="field" style={{ flex: 1 }}>
+                  <label className="label">ชื่อจริง</label>
+                  <div className="control">
+                    <input
+                      type="text"
+                      className="input"
+                      value={fname}
+                      onChange={handleFieldChange(setfName)}
+                      placeholder="ชื่อจริง"
+                    />
+                  </div>
+                </div>
+
+
+                <div className="field" style={{ flex: 1 }}>
+                  <label className="label">นามสกุล</label>
+                  <div className="control">
+                    <input
+                      type="text"
+                      className="input"
+                      value={lname}
+                      onChange={handleFieldChange(setlName)}
+                      placeholder="นามสกุล"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Email</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
-                    value={fname}
-                    onChange={handleFieldChange(setfName)}
-                    placeholder="Name"
+                    value={email}
+                    onChange={handleFieldChange(setEmail)}
+                    placeholder="Email"
                   />
                 </div>
               </div>
 
-
-              <div className="field" style={{ flex: 1 }}>
-                <label className="label">นามสกุล</label>
+              <div className="field">
+                <label className="label">Role</label>
                 <div className="control">
-                  <input
-                    type="text"
-                    className="input"
-                    value={lname}
-                    onChange={handleFieldChange(setlName)}
-                    placeholder="Name"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="field">
-              <label className="label">Email</label>
-              <div className="control">
-                <input
-                  type="text"
-                  className="input"
-                  value={email}
-                  onChange={handleFieldChange(setEmail)}
-                  placeholder="Email"
-                />
-              </div>
-            </div>
-
-            <div className="field">
-              <label className="label">Role</label>
-              <div className="control">
-                <div className="select is-fullwidth">
-                  <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                  >
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <div className="field" style={{ flex: 1 }}>
-                <label className="label">รหัสผ่าน</label>
-                <div className="control has-icons-right">
-                  <input className="input"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value)
-                      handleChange(e.target.value)
-                    }}
-                    placeholder="**********"
-                    required
-                  />
-                  <button onClick={toggleShowPassword} type="button" style={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    border: 'none',
-                    background: 'none'
-                  }}>
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
+                  <div className="select is-fullwidth">
+                    <select
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div className="field" style={{ flex: 1 }}>
-                <label className="label">ยืนยันรหัสผ่าน</label>
-                <div className="control has-icons-right">
-                  <input className="input"
-                    type={showPassword ? "text" : "password"}
-                    value={confPassword}
-                    onChange={(e) => setConfPassword(e.target.value)}
-                    placeholder="**********"
-                    required
-                  />
-                  <button onClick={toggleShowPassword} type="button" style={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    border: 'none',
-                    background: 'none'
-                  }}>
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <div className="field" style={{ flex: 1 }}>
+                  <label className="label">รหัสผ่าน</label>
+                  <div className="control has-icons-right">
+                    <input className="input"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value)
+                        handleChange(e.target.value)
+                      }}
+                      placeholder="**********"
+                    />
+                    <button onClick={toggleShowPassword} type="button" style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      border: 'none',
+                      background: 'none'
+                    }}>
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="field" style={{ flex: 1 }}>
+                  <label className="label">ยืนยันรหัสผ่าน</label>
+                  <div className="control has-icons-right">
+                    <input className="input"
+                      type={showPassword ? "text" : "password"}
+                      value={confPassword}
+                      onChange={(e) => setConfPassword(e.target.value)}
+                      placeholder="**********"
+                    />
+                    <button onClick={toggleShowPassword} type="button" style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      border: 'none',
+                      background: 'none'
+                    }}>
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <style>
-              {`
+              <style>
+                {`
                   .tracker-box {
                   background-color: #f9f9f9;
                   border: 1px solid #ddd;
@@ -251,85 +242,85 @@ return (
                   color: green;
                   }
                 `}
-            </style>
-            <main className='tracker-box'>
-              <div className={lowerValidated ? 'validated' : 'not-validated'}>
-                {lowerValidated ? (
-                  <span className='list-icon green'>
-                    <Icon icon={arrows_circle_check} />
-                  </span>
-                ) : (
-                  <span className='list-icon'>
-                    <Icon icon={arrows_exclamation} />
-                  </span>
-                )}
-                ตัวอักษรภาษาอังกฤษพิมพ์เล็กอย่างน้อย 1 ตัว
+              </style>
+              <main className='tracker-box'>
+                <div className={lowerValidated ? 'validated' : 'not-validated'}>
+                  {lowerValidated ? (
+                    <span className='list-icon green'>
+                      <MdCheckCircle />
+                    </span>
+                  ) : (
+                    <span className='list-icon'>
+                      <MdError />
+                    </span>
+                  )}
+                  ตัวอักษรภาษาอังกฤษพิมพ์เล็กอย่างน้อย 1 ตัว
+                </div>
+                <div className={upperValidated ? 'validated' : 'not-validated'}>
+                  {upperValidated ? (
+                    <span className='list-icon green'>
+                      <MdCheckCircle />
+                    </span>
+                  ) : (
+                    <span className='list-icon'>
+                      <MdError />
+                    </span>
+                  )}
+                  ตัวอักษรภาษาอังกฤษพิมพ์ใหญ่อย่างน้อย 1 ตัว
+                </div>
+                <div className={numberValidated ? 'validated' : 'not-validated'}>
+                  {numberValidated ? (
+                    <span className='list-icon green'>
+                      <MdCheckCircle />
+                    </span>
+                  ) : (
+                    <span className='list-icon'>
+                      <MdError />
+                    </span>
+                  )}
+                  ตัวเลข 0-9 อย่างน้อย 1 ตัว
+                </div>
+                <div className={specialValidated ? 'validated' : 'not-validated'}>
+                  {specialValidated ? (
+                    <span className='list-icon green'>
+                      <MdCheckCircle />
+                    </span>
+                  ) : (
+                    <span className='list-icon'>
+                      <MdError />
+                    </span>
+                  )}
+                  ตัวอักษรพิเศษอย่างน้อย 1 ตัว (! @ # $ % ^ & * .)
+                </div>
+                <div className={lengthValidated ? 'validated' : 'not-validated'}>
+                  {lengthValidated ? (
+                    <span className='list-icon green'>
+                      <MdCheckCircle />
+                    </span>
+                  ) : (
+                    <span className='list-icon'>
+                      <MdError />
+                    </span>
+                  )}
+                  มีความยาวมากกว่า 8 ตัวอักษร
+                </div>
+              </main>
+              <br />
+              <div className="field">
+                <div className="control">
+                  <button type="submit" className="button is-success"
+                    disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
+                  >
+                    ยืนยันการแก้ไข
+                  </button>
+                </div>
               </div>
-              <div className={upperValidated ? 'validated' : 'not-validated'}>
-                {upperValidated ? (
-                  <span className='list-icon green'>
-                    <Icon icon={arrows_circle_check} />
-                  </span>
-                ) : (
-                  <span className='list-icon'>
-                    <Icon icon={arrows_exclamation} />
-                  </span>
-                )}
-                ตัวอักษรภาษาอังกฤษพิมพ์ใหญ่อย่างน้อย 1 ตัว
-              </div>
-              <div className={numberValidated ? 'validated' : 'not-validated'}>
-                {numberValidated ? (
-                  <span className='list-icon green'>
-                    <Icon icon={arrows_circle_check} />
-                  </span>
-                ) : (
-                  <span className='list-icon'>
-                    <Icon icon={arrows_exclamation} />
-                  </span>
-                )}
-                ตัวเลข 0-9 อย่างน้อย 1 ตัว
-              </div>
-              <div className={specialValidated ? 'validated' : 'not-validated'}>
-                {specialValidated ? (
-                  <span className='list-icon green'>
-                    <Icon icon={arrows_circle_check} />
-                  </span>
-                ) : (
-                  <span className='list-icon'>
-                    <Icon icon={arrows_exclamation} />
-                  </span>
-                )}
-                ตัวอักษรพิเศษอย่างน้อย 1 ตัว (! @ # $ % ^ & * .)
-              </div>
-              <div className={lengthValidated ? 'validated' : 'not-validated'}>
-                {lengthValidated ? (
-                  <span className='list-icon green'>
-                    <Icon icon={arrows_circle_check} />
-                  </span>
-                ) : (
-                  <span className='list-icon'>
-                    <Icon icon={arrows_exclamation} />
-                  </span>
-                )}
-                มีความยาวมากกว่า 8 ตัวอักษร
-              </div>
-            </main>
-            <br />
-            <div className="field">
-              <div className="control">
-                <button type="submit" className="button is-success"
-                  disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
-                >
-                  ยืนยันการแก้ไข
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default FormEditUser;
