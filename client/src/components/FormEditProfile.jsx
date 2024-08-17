@@ -51,13 +51,25 @@ const FormEditProfile = () => {
         const lower = new RegExp('(?=.*[a-z])');
         const upper = new RegExp('(?=.*[A-Z])');
         const number = new RegExp('(?=.*[0-9])');
-        const special = new RegExp('(?=.*[!@#$%^&*])'); // Removed unnecessary escape characters
+        const special = new RegExp('(?=.*[!@#$%^&*.])'); // Removed unnecessary escape characters
         const length = new RegExp('(?=.{8,})');
-        setLowerValidated(lower.test(value));
-        setUpperValidated(upper.test(value));
-        setNumberValidated(number.test(value));
-        setSpecialValidated(special.test(value));
-        setLengthValidated(length.test(value));
+
+        const isLowerValidated = lower.test(value);
+        const isUpperValidated = upper.test(value);
+        const isNumberValidated = number.test(value);
+        const isSpecialValidated = special.test(value);
+        const isLengthValidated = length.test(value);
+
+        setLowerValidated(isLowerValidated);
+        setUpperValidated(isUpperValidated);
+        setNumberValidated(isNumberValidated);
+        setSpecialValidated(isSpecialValidated);
+        setLengthValidated(isLengthValidated);
+
+        if (!isLowerValidated || !isUpperValidated || !isNumberValidated || !isSpecialValidated || !isLengthValidated) {
+        } else {
+            setMsg('');
+        }
         setIsChanged(true); // Mark as changed when password is modified
     };
 
@@ -72,24 +84,25 @@ const FormEditProfile = () => {
 
     const editUser = async (e) => {
         e.preventDefault();
-        if (isChanged && (password === "" || (lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))) {
-            try {
-                await axios.patch(`http://localhost:5000/editprofile/${id}`, {
-                    fname: fname,
-                    lname: lname,
-                    email: email,
-                    password: password,
-                    confPassword: confPassword,
-                });
-                dispatch(updateUser({ fname, lname, email }));
-                navigate("/home");
-            } catch (error) {
-                if (error.response) {
-                    setMsg(error.response.data.msg);
-                }
+        // ตรวจสอบความถูกต้องของรหัสผ่านก่อนบันทึก
+        if (!lowerValidated || !upperValidated || !numberValidated || !specialValidated || !lengthValidated) {
+            setMsg('รหัสผ่านไม่ตรงตามเงื่อนไขที่กำหนด');
+            return;
+        }
+        try {
+            await axios.patch(`http://localhost:5000/editprofile/${id}`, {
+                fname: fname,
+                lname: lname,
+                email: email,
+                password: password,
+                confPassword: confPassword,
+            });
+            dispatch(updateUser({ fname, lname, email }));
+            navigate("/home");
+        } catch (error) {
+            if (error.response) {
+                setMsg(error.response.data.msg);
             }
-        } else {
-            setMsg("Please make sure all fields are valid.");
         }
     };
 
@@ -233,7 +246,7 @@ const FormEditProfile = () => {
                                             <Icon icon={arrows_exclamation} />
                                         </span>
                                     )}
-                                    At least one lowercase letter
+                                    ตัวอักษรภาษาอังกฤษพิมพ์เล็กอย่างน้อย 1 ตัว
                                 </div>
                                 <div className={upperValidated ? 'validated' : 'not-validated'}>
                                     {upperValidated ? (
@@ -245,7 +258,7 @@ const FormEditProfile = () => {
                                             <Icon icon={arrows_exclamation} />
                                         </span>
                                     )}
-                                    At least one uppercase letter
+                                    ตัวอักษรภาษาอังกฤษพิมพ์ใหญ่อย่างน้อย 1 ตัว
                                 </div>
                                 <div className={numberValidated ? 'validated' : 'not-validated'}>
                                     {numberValidated ? (
@@ -257,7 +270,7 @@ const FormEditProfile = () => {
                                             <Icon icon={arrows_exclamation} />
                                         </span>
                                     )}
-                                    At least one number
+                                    ตัวเลข 0-9 อย่างน้อย 1 ตัว
                                 </div>
                                 <div className={specialValidated ? 'validated' : 'not-validated'}>
                                     {specialValidated ? (
@@ -269,7 +282,7 @@ const FormEditProfile = () => {
                                             <Icon icon={arrows_exclamation} />
                                         </span>
                                     )}
-                                    At least one special character
+                                    ตัวอักษรพิเศษอย่างน้อย 1 ตัว (! @ # $ % ^ & * .) 
                                 </div>
                                 <div className={lengthValidated ? 'validated' : 'not-validated'}>
                                     {lengthValidated ? (
@@ -281,14 +294,14 @@ const FormEditProfile = () => {
                                             <Icon icon={arrows_exclamation} />
                                         </span>
                                     )}
-                                    At least 8 characters
+                                    มีความยาวมากกว่า 8 ตัวอักษร
                                 </div>
                             </main>
                             <br />
                             <div className="field">
                                 <div className="control">
                                     <button type="submit" className="button is-success"
-                                    disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
+                                        disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
                                     >
                                         ยืนยันการแก้ไข
                                     </button>
