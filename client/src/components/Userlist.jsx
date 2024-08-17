@@ -57,7 +57,7 @@ const Userlist = () => {
                                     <strong>แก้ไข</strong>
                                 </Link>
                                 <button
-                                    onClick={() => deleteUser(user.id, `${user.fname} ${user.lname}`)}
+                                    onClick={() => deleteUser(user.uuid, user.fname)}
                                     className="button is-small is-danger"
                                     style={{ width: '80px', marginLeft: '10px' }}
                                 >

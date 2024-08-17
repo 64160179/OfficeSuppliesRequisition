@@ -62,29 +62,34 @@ export const getProductById = async (req, res) => {
 
 const generateProductCode = async () => {
     try {
-        // ดึงสินค้าที่ถูกสร้างล่าสุดจากฐานข้อมูล
-        const lastProduct = await Product.findOne({
-            order: [['createdAt', 'DESC']],
+        // ดึงรหัสสินค้าล่าสุดจาก Products
+        const latestProduct = await Product.findOne({
+            order: [['code', 'DESC']],
             attributes: ['code']
         });
 
-        // ถ้ายังไม่มีสินค้าในฐานข้อมูล ให้เริ่มต้นที่ A001
-        if (!lastProduct || !lastProduct.code) {
-            return 'A001';
+        // ถ้าไม่มีรหัสสินค้าล่าสุด ให้เริ่มต้นที่ A001
+        let newCode = 'A001';
+        if (latestProduct && latestProduct.code) {
+            const lastCode = latestProduct.code;
+            const numberPart = parseInt(lastCode.slice(1), 10);
+            const nextNumber = (numberPart + 1).toString().padStart(3, '0');
+            newCode = `A${nextNumber}`;
         }
 
-        // ดึงส่วนตัวเลขของรหัสสินค้าล่าสุดและเพิ่มค่า
-        const lastCode = lastProduct.code;
-        const numberPart = parseInt(lastCode.slice(1), 10);
-        const nextNumber = (numberPart + 1).toString().padStart(3, '0');
+        // อัปเดตรหัสสินค้าล่าสุดในฟิลด์ `last_generated_code`
+        await Product.update(
+            { last_generated_code: newCode },
+            { where: { id: 1 } } // ใช้ ID ที่เหมาะสม หรือเพิ่มการจัดการ ID ใหม่
+        );
 
-        // คืนค่ารหัสสินค้าถัดไป
-        return `A${nextNumber}`;
+        return newCode;
     } catch (error) {
         console.error('Error generating product code:', error);
         throw error;
     }
 }
+
 
 export const createProduct = async (req, res) => {
     const { name, unit, quantity, category, location, visible } = req.body;
@@ -157,7 +162,7 @@ export const updateProductVisibility = async (req, res) => {
         console.error('Error updating product visibility:', error.message);
         res.status(500).json({ msg: error.message });
     }
-}
+};
 
 export const deleteProduct = async (req, res) => {
     const product = await Product.findOne({

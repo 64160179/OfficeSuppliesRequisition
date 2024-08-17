@@ -44,6 +44,7 @@ export const getMeById = async (req, res) => {
 export const createUser = async (req, res) => {
     const { fname, lname, email, password, confPassword, role } = req.body;
     if (password !== confPassword) return res.status(400).json({ msg: "รหัสผ่านไม่ตรงกัน !" });
+    if (!role) return res.status(400).json({ msg: "กรุณาเลือกบทบาทผู้ใช้ !" });
     // ตรวจสอบว่ามีอีเมลนี้ในฐานข้อมูลหรือไม่
     const existingUserByEmail = await User.findOne({
         where: {
@@ -169,21 +170,21 @@ export const editProfile = async (req, res) => {
 };
 
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async(req, res) =>{
     const user = await User.findOne({
         where: {
             uuid: req.params.id
         }
     });
-    if (!user) return res.status(404).json({ msg: "ไม่พบผู้ใช้ !" });
+    if(!user) return res.status(404).json({msg: "ไม่พบผู้ใช้ !"});
     try {
         await User.destroy({
-            where: {
+            where:{
                 id: user.id
             }
         });
-        res.status(200).json({ msg: "ลบผู้ใช้เรียบร้อยแล้ว !" });
+        res.status(200).json({msg: "ลบผู้ใช้เรียบร้อยแล้ว !"});
     } catch (error) {
-        res.status(400).json({ msg: error.message });
+        res.status(400).json({msg: error.message});
     }
 }
