@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Fahkwang:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Pridi:wght@200;300;400;500;600;700&family=Taviraj:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
     padding: 0;
     margin: 0;
     padding: 0;
@@ -9,8 +9,8 @@
     font-style: normal;
 }
 
-:root{
-    --primaryColor: hsl(227, 83%, 50%);
+:root {
+    --primaryColor: hsl(208.037, 100%, 21%);
     --hoverColor: hsl(209, 86%, 53%);
     --palegreen: hsl(96, 75%, 89%);
     --whiteColor: hsl(0, 0%, 100%);
@@ -29,53 +29,54 @@
     --smallestFontSize: 0.75rem;
 }
 
-.flex{
+.flex {
     display: flex;
     align-items: center;
 }
 
-.grid{
+.grid {
     display: grid;
     align-items: center;
     gap: 1.5rem;
 }
 
-html{
+html {
     font-size: 90%;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-li{
+li {
     list-style: none;
 }
 
-.icon{
+.icon {
     font-size: var(--h2FontSize);
     cursor: pointer;
 }
 
-img, video{
+img,
+video {
     width: 100%;
     height: auto;
 }
 
-.message{
+.message {
     display: none;
 }
 
-.showMessage{
+.showMessage {
     display: block;
     color: var(--whiteColor);
     background: rgb(255, 0, 0);
     padding: 10px;
     border-radius: 3px;
-    text-align: center;   
+    text-align: center;
 }
 
-.btn{
+.btn {
     border: none;
     outline: none;
     cursor: pointer;
@@ -84,17 +85,16 @@ img, video{
     color: var(--grayText);
 }
 
-.btn.icon{
+.btn.icon {
     margin-left: 0.5rem;
 }
 
-.btn:hover{
+.btn:hover {
     color: var(--primaryColor);
-    background: var(--palegreen);
 }
 
-// Pages stylings
-.loginPage, .registerPage{
+// start loginPage
+.loginPage {
     height: 100vh;
     width: 100%;
     margin: auto;
@@ -102,7 +102,7 @@ img, video{
     overflow: hidden;
     box-shadow: 0 7px 50px rgb(214, 223, 213);
 
-    .container{
+    .container {
         height: 75vh;
         width: 60%;
         margin: auto;
@@ -110,7 +110,7 @@ img, video{
         border-radius: 10px;
         background: hsl(0, 0%, 91%);
 
-        .videoDiv{
+        .videoDiv {
             position: relative;
             display: flex;
             flex-basis: 50%;
@@ -124,11 +124,12 @@ img, video{
             border-radius: 10px;
             overflow: hidden;
 
-            video, .footerDiv{
+            video,
+            .footerDiv {
                 position: absolute;
             }
 
-            video{
+            video {
                 height: 100%;
                 width: 100%;
                 object-fit: cover;
@@ -138,23 +139,23 @@ img, video{
                 right: 0;
             }
 
-            .textDiv{
+            .textDiv {
                 position: relative;
 
-                .title{
+                .title {
                     color: var(--whiteColor);
                     font-size: 35px;
                     font-weight: 800;
                 }
 
-                p{
+                p {
                     color: var(--whiteColor);
-                    padding: 1rem ;
+                    padding: 1rem;
                     font-weight: 400;
                 }
             }
 
-            .footerDiv{
+            .footerDiv {
                 bottom: 10px;
                 padding: 0 1rem;
                 height: 60px;
@@ -165,11 +166,11 @@ img, video{
                 backdrop-filter: blur(1px);
                 border-radius: 10px;
 
-                .text{
+                .text {
                     color: var(--whiteColor);
                 }
 
-                .btn{
+                .btn {
                     background: var(--whiteColor);
                     color: var(--primaryColor);
                     padding: 0.8rem 1.5rem;
@@ -177,7 +178,7 @@ img, video{
                     font-weight: 400;
                     transition: 0.3s ease;
 
-                    &:hover{
+                    &:hover {
                         background: var(--hoverColor);
                         color: var(--blackColor);
 
@@ -186,7 +187,7 @@ img, video{
             }
         }
 
-        .formDiv{
+        .formDiv {
             flex-basis: 50%;
             margin: auto;
             flex-direction: column;
@@ -194,38 +195,38 @@ img, video{
             transform: translate(-1rem);
         }
 
-        .headerDiv{
+        .headerDiv {
             text-align: center;
             padding: 1.5rem 0;
 
-            img{
+            img {
                 width: 60px;
                 padding-bottom: 0.5rem;
             }
 
-            h1{
+            h1 {
                 font-size: 25px;
                 color: var(--blackColor);
                 font-weight: 600;
             }
         }
 
-        .form{
+        .form {
             gap: 1rem;
 
-            .inputDiv{
-                .icon{
+            .inputDiv {
+                .icon {
                     color: var(--grayText);
                 }
 
-                input{
+                input {
                     background: none;
                     outline: none;
                     border: none;
                     width: 200px;
                 }
 
-                label{
+                label {
                     color: var(--blackColor);
                     font-weight: 400;
                     font-size: 14px;
@@ -233,7 +234,7 @@ img, video{
                     display: block;
                 }
 
-                .input{
+                .input {
                     gap: 0.5rem;
                     padding: 1rem;
                     background: var(--inputColor);
@@ -241,7 +242,7 @@ img, video{
                 }
             }
 
-            .btn{
+            .btn {
                 padding: 0.8rem;
                 background: var(--primaryColor);
                 border-radius: 10px;
@@ -254,25 +255,25 @@ img, video{
                 gap: 0.5rem;
                 transition: 0.3s ease;
 
-                .icon{
+                .icon {
                     font-size: 25px;
                     transition: 0.3s ease;
                 }
 
-                &:hover{
+                &:hover {
                     color: var(--hoverColor);
                     transform: translate(5px);
                 }
             }
         }
 
-        .forgotPassword{
+        .forgotPassword {
             text-align: center;
             color: var(--blackColor);
             font-size: 14px;
             opacity: 0.7;
 
-            a{
+            a {
                 text-decoration: underline;
                 cursor: pointer;
                 opacity: 0.7;
@@ -281,59 +282,114 @@ img, video{
     }
 }
 
-@media screen and (max-width:602px){
-    .loginPage, .registerPage{
-        .container{
+// end loginPage
+
+// start sidebar
+.sidebar {
+    width: 100%; // กำหนดความกว้างของ Sidebar ให้เต็มคอลัมน์
+  
+    .menu-label {
+      font-size: 16px;
+      font-weight: bold; 
+    }
+  
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      width: 100%; // ทำให้ NavLink ขยายเต็มความกว้างของ Sidebar
+      box-sizing: border-box; // รวม padding ในความกว้างทั้งหมด
+      transition: background-color 0.3s ease;
+      
+  
+      &:hover {
+        background-color: var(--primaryColor); // เปลี่ยนสีพื้นหลังเมื่อ hover
+        color: #ffffff; // เปลี่ยนสีข้อความเมื่อ hover
+      }
+    }
+  
+    .menu-secoundary {
+      margin-right: 10px; // เพิ่มระยะห่างระหว่างไอคอนกับข้อความ
+    }
+
+    .custom-font-size {
+        font-size: 18px; // ปรับขนาดตัวอักษรตามที่ต้องการ
+        font-weight: 500; 
+    }
+
+    .a-logout {
+        background-color: #E63946;
+        color: #ffffff;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    
+        &:hover {
+          transform: scale(1.07); // ขยายขนาดเล็กน้อยเมื่อ hover
+        }
+      }
+  }
+// end sidebar
+
+@media screen and (max-width:602px) {
+
+    .loginPage,
+    .registerPage {
+        .container {
             width: 100%;
             height: 100%;
             flex-direction: column;
             padding: 1.5rem;
 
-            .videoDiv{
+            .videoDiv {
                 width: 100%;
-                .textDiv{
-                    .title{
+
+                .textDiv {
+                    .title {
                         font-size: 20px;
                     }
 
-                    p{
+                    p {
                         padding: 1rem;
                     }
                 }
             }
 
-            .footerDiv{
-                .text{
+            .footerDiv {
+                .text {
                     font-size: 12px;
                 }
 
-                .btn{
+                .btn {
                     padding: 0.4rem 1.5rem;
                 }
             }
         }
 
-        .formDiv{
+        .formDiv {
             gap: 1rem;
             transform: translateY(-0.5rem);
 
-            .headerDiv{
+            .headerDiv {
                 padding: 1rem 0;
 
-                img{
+                img {
                     width: 40px;
                 }
 
-                h1{
+                h1 {
                     font-size: 20px;
                 }
             }
 
-            .form{
+            .form {
                 gap: 0.5rem;
 
-                .inputDiv{
-                    input{
+                .inputDiv {
+                    input {
                         width: 100%;
                     }
                 }
@@ -342,44 +398,46 @@ img, video{
     }
 }
 
-@media screen and (max-width:678px){
-    .loginPage, .registerPage{
-        .container{
-            .videoDiv{
-                .textDiv{
-                    .title{
+@media screen and (max-width:678px) {
+
+    .loginPage,
+    .registerPage {
+        .container {
+            .videoDiv {
+                .textDiv {
+                    .title {
                         font-size: 25px;
                     }
 
-                    p{
+                    p {
                         padding: 1rem;
                     }
                 }
             }
 
-            .footerDiv{
-                .text{
+            .footerDiv {
+                .text {
                     font-size: 12px;
                 }
 
-                .btn{
+                .btn {
                     padding: 0.8rem 1.5rem;
                 }
             }
         }
 
-        .formDiv{
-            .headerDiv{
+        .formDiv {
+            .headerDiv {
                 padding: 1rem 0;
 
-                h1{
+                h1 {
                     font-size: 20px;
                 }
             }
 
-            .form{
-                .inputDiv{
-                    input{
+            .form {
+                .inputDiv {
+                    input {
                         width: 100%;
                         max-width: 200px;
                     }
@@ -389,15 +447,18 @@ img, video{
     }
 }
 
-@media screen and (max-width:927px){
-    .loginPage, .registerPage{
-        .container{
+@media screen and (max-width:927px) {
+
+    .loginPage,
+    .registerPage {
+        .container {
             width: 85%;
         }
     }
 }
 
+
 // Hide Scroll Bar
-::-webkit-scrollbar{
-    display: none;
-}
+// ::-webkit-scrollbar{
+//     display: none;
+// }

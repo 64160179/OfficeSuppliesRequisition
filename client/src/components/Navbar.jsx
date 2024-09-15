@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import logo from "../asset/logo.png";
-import { useDispatch } from "react-redux";
-import { LogOut, reset } from "../features/authSlice";
-import { IoLogOut } from "react-icons/io5";
+import React from "react";
+import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+// import ifbuu from "../asset/ifbuu.png";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isActive, setIsActive] = useState(false);
 
-  const logout = () => {
-    dispatch(LogOut());
-    dispatch(reset());
-    navigate("/");
+  const [hover, setHover] = React.useState(false);
+
+  const linkStyle = {
+    marginLeft: "10px",
+    color: '#ffffff',
+    fontSize: "27px",
+    textDecoration: 'none',
+    cursor: 'pointer',
+    transition: 'text-decoration 0.3s ease',
   };
 
-  const toggleBurger = () => {
-    setIsActive(!isActive);
+  const linkHoverStyle = {
+    textDecoration: 'underline',
   };
 
   return (
@@ -26,40 +26,28 @@ const Navbar = () => {
         className="navbar is-fixed-top has-shadow"
         role="navigation"
         aria-label="main navigation"
+        style={{ backgroundColor: '#00396b', height: '120px' }}
       >
-        <div className="navbar-brand">
-          <NavLink to="/home" className="navbar-item">
-            <img src={logo} width="112" height="28" alt="logo" />
+
+        <div className="navbar-brand" style={{ marginLeft: "10px", marginTop: "15px" }}>
+          <NavLink to="/home">
+            <img
+              src="https://www.informatics.buu.ac.th/2020/wp-content/uploads/2018/04/logo-informatics.png"
+              alt="Logo"
+              style={{ width: '90px', height: '90px', }}
+            />
           </NavLink>
 
-          <a
-            href="#!"
-            role="button"
-            className={`navbar-burger burger ${isActive ? "is-active" : ""}`}
-            aria-label="menu"
-            aria-expanded={isActive ? "true" : "false"}
-            data-target="navbarBasicExample"
-            onClick={toggleBurger}
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-        </div>
+          <div style={{ display: 'flex', flexDirection: 'column', marginLeft: "10px", marginTop: "10px" }}>
+            <Link
+              to="/home"
+              style={hover ? { ...linkStyle, ...linkHoverStyle } : linkStyle}
+              onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+            >
+              คณะวิทยาการสารสนเทศ
+            </Link>
 
-        <div
-          id="navbarBasicExample"
-          className={`navbar-menu ${isActive ? "is-active" : ""}`}
-        >
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="buttons">
-                <button className="button is-light" onClick={logout}>
-                  <IoLogOut />
-                  <span>Logout</span>
-                </button>
-              </div>
-            </div>
+            <p style={{ marginLeft: "10px", color: '#dadada', fontSize: "15px" }}>มหาวิทยาลัยบูรพา</p>
           </div>
         </div>
       </nav>

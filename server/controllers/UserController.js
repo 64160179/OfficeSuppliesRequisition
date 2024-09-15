@@ -1,16 +1,27 @@
 import User from "../models/UserModel.js";
 import argon2 from "argon2";
+import { Op } from "sequelize";  // นำเข้า Op สำหรับใช้ใน Sequelize
 
 export const getUsers = async (req, res) => {
+    // รับค่าการค้นหาจาก query string
+    const search = req.query.search || ''; // ถ้าไม่มีค่า search จะใช้ค่าเริ่มต้นเป็นค่าว่าง
+
     try {
         const response = await User.findAll({
-            attributes: ['id', 'uuid', 'fname', 'lname', 'email', 'role']
+            attributes: ['id', 'uuid', 'fname', 'lname', 'email', 'role'],
+            where: {
+                // ใช้ Op.or เพื่อค้นหาหลายฟิลด์พร้อมกัน
+                [Op.or]: [
+                    { fname: { [Op.like]: `%${search}%` } },  // ค้นหา fname
+                    { lname: { [Op.like]: `%${search}%` } },  // ค้นหา lname
+                ]
+            }
         });
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
-}
+};
 
 export const getUserById = async (req, res) => {
     try {

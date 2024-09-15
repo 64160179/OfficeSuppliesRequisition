@@ -1,11 +1,11 @@
 import React from 'react'
 import Layout from './Layout'
-import Userlist from '../components/Userlist'
+import UserList from '../components/Userlist'
 
 const Users = () => {
   return (
     <Layout>
-        <Userlist />
+        <UserList />
     </Layout>
   )
 }

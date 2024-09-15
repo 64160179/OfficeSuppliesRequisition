@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback  } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const Userlist = () => {
+const UserList = () => {
     const [users, setUsers] = useState([]);
+    const [search, setSearch] = useState(''); // เก็บค่าการค้นหา
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const getUsers = useCallback(async () => {
+        const response = await axios.get(`http://localhost:5000/users?search=${search}`);
+        setUsers(response.data);
+    }, [search]);
 
     useEffect(() => {
         getUsers();
-    }, []);
-
-    const getUsers = async () => {
-        const response = await axios.get("http://localhost:5000/users");
-        setUsers(response.data);
+    }, [search, getUsers]); // โหลดข้อมูลใหม่เมื่อค่า search หรือ getUsers เปลี่ยนแปลง
+    
+    const handleSearch = (e) => {
+        setSearch(e.target.value); // อัปเดตค่าการค้นหาเมื่อผู้ใช้กรอกข้อมูล
     };
 
     const deleteUser = async (userId, userName) => {
@@ -22,13 +29,43 @@ const Userlist = () => {
         }
     };
 
+    // คำนวณรายการวัสดุที่จะแสดงในหน้าปัจจุบัน
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentUsers = users.slice(indexOfFirstItem, indexOfLastItem);
+
+    // คำนวณจำนวนหน้าทั้งหมด
+    const totalPages = Math.ceil(users.length / itemsPerPage);
+
+    // ฟังก์ชั่นเปลี่ยนหน้า
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
+
     return (
         <div>
             <br />
-            <h1 className="title">รายชื่อผู้ใช้</h1>
-            <Link to="/users/add" className="button is-link mb-2">
-                + เพิ่มผู้ใช้ใหม่
-            </Link>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
+                <h1 className="title">รายชื่อผู้ใช้</h1>
+                <span className="subtitle">จำนวนผู้ใช้ทั้งหมด: {users.length}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px',width: '99%' }}>
+                <Link to="/users/add" className="button is-link">
+                    + เพิ่มผู้ใช้ใหม่
+                </Link>
+                <input
+                    type="text"
+                    className="input"
+                    placeholder="ค้นหา ชื่อจริง - นามสกุล"
+                    style={{ flex: 1, marginLeft: '10px' }}
+                    value={search}  // กำหนดค่า search ใน input
+                    onChange={handleSearch} // ฟังก์ชันเรียกใช้งานเมื่อมีการกรอกข้อมูล
+                />
+            </div>
             <table className='table is-striped' style={{ width: '99%' }}>
                 <thead>
                     <tr>
@@ -41,14 +78,14 @@ const Userlist = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
-                        <tr key={user.uuid}>
+                    {currentUsers.map((user) => (
+                        <tr key={indexOfFirstItem + user.uuid}>
                             <td>{user.id}</td>
                             <td>{user.fname}</td>
                             <td>{user.lname}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
-                            <td className="has-text-centered">
+                            <td className="has-text-centered actions">
                                 <Link
                                     to={`/users/edit/${user.uuid}`}
                                     className="button is-small is-warning"
@@ -68,8 +105,51 @@ const Userlist = () => {
                     ))}
                 </tbody>
             </table>
-        </div>
-    )
-}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '99%' }}>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <label htmlFor="itemsPerPage">แสดง : </label>
+                    <select
+                        id="itemsPerPage"
+                        value={itemsPerPage}
+                        onChange={(e) => {
+                            setItemsPerPage(Number(e.target.value));
+                            setCurrentPage(1); // รีเซ็ตหน้าปัจจุบันเมื่อเปลี่ยนจำนวนการแสดงผล
+                        }}
+                        style={{ padding: '5px', margin: '2px', border: '1px solid #ccc', borderRadius: '5px', width: '80px' }}
+                    >
+                        <option value={10} className="has-text-centered">10</option>
+                        <option value={15} className="has-text-centered">15</option>
+                        <option value={20} className="has-text-centered">20</option>
+                        <option value={25} className="has-text-centered">25</option>
+                        <option value={30} className="has-text-centered">30</option>
+                    </select>
+                </div>
 
-export default Userlist
+                <div style={{ fontWeight: 'bold' }}>
+                    หน้า {currentPage} จาก {totalPages}
+                </div>
+
+                <div style={{ display: 'flex', gap: '5px' }}>
+                    <button
+                        className="button is-warning"
+                        onClick={handlePrevPage}
+                        disabled={currentPage === 1}
+                        style={{ width: '100px', padding: '5px', margin: '2px', border: '1px solid #ccc', borderRadius: '5px', cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+                    >
+                        ก่อนหน้า
+                    </button>
+                    <button
+                        className="button is-success"
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                        style={{ width: '100px', padding: '5px', margin: '2px', border: '1px solid #ccc', borderRadius: '5px', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+                    >
+                        ถัดไป
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default UserList;

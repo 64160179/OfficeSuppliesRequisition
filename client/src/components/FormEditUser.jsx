@@ -98,6 +98,18 @@ const FormEditUser = () => {
     }
   };
 
+  const handleCancel = () => {
+    // รีเซ็ตสถานะของฟอร์ม
+    setfName('');
+    setlName('');
+    setEmail('');
+    setPassword('');
+    setConfPassword('');
+    setRole('');
+    // ย้อนกลับไปหน้า /users
+    navigate('/users');
+  };
+
   return (
     <div>
       <br />
@@ -306,7 +318,12 @@ const FormEditUser = () => {
                 </div>
               </main>
               <br />
-              <div className="field">
+              <div className="field is-grouped">
+                <div className="control">
+                  <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
+                    ยกเลิก
+                  </button>
+                </div>
                 <div className="control">
                   <button type="submit" className="button is-success"
                     disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}

@@ -15,6 +15,18 @@ const FormAddUser = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
+    const handleCancel = () => {
+        // รีเซ็ตสถานะของฟอร์ม
+        setfName('');
+        setlName('');
+        setEmail('');
+        setPassword('');
+        setConfPassword('');
+        setRole('');
+        // ย้อนกลับไปหน้า /users
+        navigate('/users');
+    };
+
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -37,6 +49,7 @@ const FormAddUser = () => {
             }
         }
     };
+
     return (
         <div>
             <br />
@@ -84,7 +97,7 @@ const FormAddUser = () => {
                                     />
                                 </div>
                             </div>
-                            
+
                             <div className="field">
                                 <label className="label">Role</label>
                                 <div className="control">
@@ -148,9 +161,15 @@ const FormAddUser = () => {
                             </div>
 
                             <br />
-                            <div className="field">
+
+                            <div className="field is-grouped">
                                 <div className="control">
-                                    <button type="submit" className="button is-success">
+                                    <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
+                                        ยกเลิก
+                                    </button>
+                                </div>
+                                <div className="control">
+                                    <button type="submit" className="button is-success" style={{ width: "120px" }}>
                                         บันทึกข้อมูล
                                     </button>
                                 </div>
