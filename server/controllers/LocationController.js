@@ -17,6 +17,20 @@ export const getLocation = async (req, res) => {
     }
 }
 
+export const getLocationById = async (req, res) => {
+    try {
+        const response = await Locations.findOne({
+            attributes: ['id', 'uuid', 'name'],
+            where: {
+                uuid: req.params.id
+            }
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
 export const createLocation = async (req, res) => {
     const { name } = req.body;
     const existingLocation = await Locations.findOne({ where: { name } });
@@ -57,7 +71,7 @@ export const updateLocation = async (req, res) => {
         });
         res.status(200).json({ msg: "อัปเดตสถานที่สำเร็จ !" });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: "เกิดข้อผิดพลาดในการอัปเดตข้อมูล !" });
     }
 }
 

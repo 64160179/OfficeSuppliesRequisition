@@ -67,7 +67,7 @@ const CountingUnitList = () => {
     <div>
       <br />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
-        <h1 className="title">รายการหน่วยนับ (search can't use)</h1>
+        <h1 className="title">รายการหน่วยนับ</h1>
         <span className="subtitle">จำนวนทั้งหมด: {countingUnits.length}</span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
@@ -95,13 +95,13 @@ const CountingUnitList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentCountingUnits.map((countingUnit) => (
+          {currentCountingUnits.map((countingUnit, index) => (
             <tr key={indexOfFirstItem + countingUnit.uuid}>
-              <td>{countingUnit.id}</td>
+              <td>{index + 1}</td>
               <td>{countingUnit.name}</td>
               <td className="has-text-centered">
                 <Link
-
+                  to={`/countingunits/edit/${countingUnit.uuid}`}
                   className="button is-small is-warning"
                   style={{ width: '80px', }}
                 >

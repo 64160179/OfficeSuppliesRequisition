@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-const FormEditCountingUnit = () => {
+const FormEditLacation = () => {
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
-    const getCountingUnitById = async () => {
+    const getLocationById = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/countingUnits/${id}`);
+        const response = await axios.get(`http://localhost:5000/locations/${id}`);
         setName(response.data.name);
       } catch (error) {
         if (error.response) {
@@ -19,23 +19,23 @@ const FormEditCountingUnit = () => {
         }
       }
     };
-    getCountingUnitById();
+    getLocationById();
   }, [id]);
 
   const handleCancel = () => {
     // รีเซ็ตสถานะของฟอร์ม
     setName('');
     // ย้อนกลับไปหน้า /users
-    navigate('/countingunits');
+    navigate('/locations');
   };
 
-  const updateCountingUnit = async (e) => {
+  const updateLocation = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/countingUnits/${id}`, {
+      await axios.patch(`http://localhost:5000/locations/${id}`, {
         name: name
       });
-      navigate("/countingunits");
+      navigate("/locations");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
@@ -46,15 +46,15 @@ const FormEditCountingUnit = () => {
   return (
     <div>
       <br />
-      <h1 className="title">แก้ไขชื่อหน่วยนับ</h1>
+      <h1 className="title">แก้ไขสถานที่จัดเก็บ</h1>
 
       <div className="card is-shadowless" style={{ width: '99%' }}>
         <div className="card-content">
           <div className="content">
-            <form onSubmit={updateCountingUnit}>
+            <form onSubmit={updateLocation}>
               <p className="has-text-centered"><strong style={{ color: 'red' }}>{msg}</strong></p>
               <div className="field">
-                <label className="label">ชื่อหน่วยนับ</label>
+                <label className="label">ตำแหน่งสถานที่จัดเก็บ</label>
                 <div className="control">
                   <input
                     type="text"
@@ -86,4 +86,4 @@ const FormEditCountingUnit = () => {
   )
 }
 
-export default FormEditCountingUnit
+export default FormEditLacation

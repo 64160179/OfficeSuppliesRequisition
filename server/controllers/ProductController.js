@@ -12,7 +12,7 @@ export const getProducts = async (req, res) => {
             });
         } else {
             response = await Product.findAll({
-                attributes: ['id', 'uuid','code', 'name', 'unit', 'quantity', 'category'],
+                attributes: ['id', 'uuid', 'code', 'name', 'unit', 'quantity', 'category'],
                 where: {
                     visible: 'visible'
                 }
@@ -35,7 +35,7 @@ export const getProductById = async (req, res) => {
         let response;
         if (req.role === "admin") {
             response = await Product.findOne({
-                attributes: ['id', 'uuid','code', 'name', 'unit', 'quantity', 'category', 'location', 'visible'],
+                attributes: ['id', 'uuid', 'code', 'name', 'unit', 'quantity', 'category', 'location', 'visible'],
                 where: {
                     id: product.id
                 },
@@ -64,13 +64,9 @@ export const getProductById = async (req, res) => {
 
 const generateProductCode = async () => {
     try {
-        // ดึงรหัสสินค้าล่าสุดจาก Products
         const latestProduct = await Product.findOne({
-            order: [['code', 'DESC']],
-            attributes: ['code']
+            order: [['id', 'DESC']]
         });
-
-        // ถ้าไม่มีสินค้าล่าสุด ให้เริ่มต้นที่ A001
         let newCode = 'A001';
         if (latestProduct && latestProduct.id) {
             const nextId = latestProduct.id + 1;
@@ -84,38 +80,31 @@ const generateProductCode = async () => {
     }
 }
 
-
 export const createProduct = async (req, res) => {
-    const { name, unit, quantity, location, visible } = req.body;
+    const { name, countingunitsId, quantity, locationId, visible } = req.body;
     try {
-        const code = await generateProductCode();
-
-        // ดึงข้อมูล name จากตาราง Locations
-        const locationData = await Location.findOne({
-            where: { name: location },
-            attributes: ['name']
-        });
-
-        if (!locationData) {
-            return res.status(404).json({ msg: "ไม่พบสถานที่นี้ !" });
-        }
         
-        // ดึงข้อมูล name จากตาราง CountingUnits
-        const countingUnitData = await CountingUnit.findOne({
-            where: { name: unit },
-            attributes: ['name']
-        });
-
+        // ค้นหา id ของ counting unit
+        const countingUnitData = await CountingUnit.findByPk(countingunitsId);
         if (!countingUnitData) {
-            return res.status(404).json({ msg: "ไม่พบหน่วยนับนี้ !" });
+            return res.status(404).json({ msg: "กรุณาเลือกหน่วยนับ !" });
         }
+
+        // ค้นหา id ของ location
+        const locationData = await Location.findByPk(locationId);
+        if (!locationData) {
+            return res.status(404).json({ msg: "กรุณาเลือกสถานที่จัดเก็บ !" });
+        }
+
+
+        const code = await generateProductCode();
 
         await Product.create({
             code: code,
             name: name,
             quantity: quantity,
-            unit: countingUnitData.name, // ใช้ name จากตาราง CountingUnits
-            location: locationData.name, // ใช้ name จากตาราง Locations
+            locationId: locationData.id, // ใช้ id ของ location
+            countingunitsId: countingUnitData.id, // ใช้ id ของ counting unit
             visible: visible
         });
         res.status(201).json({ msg: "เพิ่มวัสดุ-อุปกรณ์สำเร็จ !" });

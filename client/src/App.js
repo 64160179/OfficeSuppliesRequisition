@@ -17,9 +17,11 @@ import Historys from './pages/Historys.jsx';
 
 import Location from './pages/Location/Location.jsx';
 import AddLocation from './pages/Location/AddLocation.jsx';
+import EditLocation from './pages/Location/EditLocation.jsx';
 
 import CountingUnit from './pages/CountingUnit/CountingUnit.jsx';
 import AddCountingUnit from './pages/CountingUnit/AddCountingUnit.jsx';
+import EditCountingUnit from './pages/CountingUnit/EditCountingUnit.jsx';
 
 
 function App() {
@@ -43,9 +45,11 @@ function App() {
 
           <Route path="/locations" element={<Location />} />
           <Route path="/locations/add" element={<AddLocation />} />
+          <Route path="/locations/edit/:id" element={<EditLocation />} />
 
           <Route path="/countingunits" element={<CountingUnit />}/>
           <Route path="/countingunits/add" element={<AddCountingUnit />} />
+          <Route path="/countingunits/edit/:id" element={<EditCountingUnit />} />
 
         </Routes>
       </BrowserRouter>

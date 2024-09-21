@@ -115,7 +115,7 @@ const FormEditUser = () => {
       <br />
       <h1 className="title">ตั้งค่าผู้ใช้</h1>
 
-      <div className="card is-shadowless">
+      <div className="card is-shadowless" style={{ width: '99%' }}>
         <div className="card-content">
           <div className="content">
             <form onSubmit={updateUser}>

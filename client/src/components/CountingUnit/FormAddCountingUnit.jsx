@@ -1,14 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const FormAddCountingUnit = () => {
+  const [countingUnitName, setCountingUnitName] = useState("");
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
   const handleCancel = () => {
     // รีเซ็ตสถานะของฟอร์ม
-
+    setCountingUnitName('');
     // ย้อนกลับไปหน้า /users
     navigate('/countingunits');
+  };
+
+  const saveCountingUnit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/countingunits", {
+        name: countingUnitName
+      });
+      navigate("/countingunits");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
   };
 
   return (
@@ -18,14 +35,17 @@ const FormAddCountingUnit = () => {
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
-            <form >
-              {/* <p className="has-text-centered" style={{ color: 'red' }}>{msg}</p> */}
+            <form onSubmit={saveCountingUnit}>
+              <p className="has-text-centered" style={{ color: 'red' }}>{msg}</p>
               <div className="field">
                 <label className="label">ชื่อหน่วยนับ</label>
                 <div className="control">
                   <input className="input"
                     type="text"
+                    value={countingUnitName}
+                    onChange={(e) => setCountingUnitName(e.target.value)}
                     placeholder="กรุณากรอกชื่อหน่วยนับ"
+                    required
                   />
                 </div>
               </div>

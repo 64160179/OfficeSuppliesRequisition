@@ -17,6 +17,20 @@ export const getCountingUnit = async (req, res) => {
     }
 }
 
+export const getCountingUnitById = async (req, res) => {
+    try {
+        const response = await CountingUnits.findOne({
+            attributes: ['id', 'uuid', 'name'],
+            where: {
+                uuid: req.params.id
+            }
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
 export const createCountingUnit = async (req, res) => {
     const { name } = req.body;
     const existingCountingUnit = await CountingUnits.findOne({ where: { name } });
@@ -51,12 +65,12 @@ export const updateCountingUnit = async (req, res) => {
     try {
         await CountingUnits.update(updateFields, {
             where: {
-                id: countingUnit.id
+                uuid: req.params.id
             }
         });
         res.status(200).json({ msg: "อัปเดตหน่วยนับสำเร็จ !" });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: "เกิดข้อผิดพลาดในการอัปเดตข้อมูล !" });
     }
 }
 

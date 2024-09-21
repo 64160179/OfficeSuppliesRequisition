@@ -67,7 +67,7 @@ const LocationList = () => {
     <div>
       <br />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
-        <h1 className="title">รายการสถานที่จัดเก็บ (search can't use)</h1>
+        <h1 className="title">รายการสถานที่จัดเก็บ</h1>
         <span className="subtitle">จำนวนทั้งหมด: {locations.length}</span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
@@ -95,13 +95,13 @@ const LocationList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentLocations.map((location) => (
+          {currentLocations.map((location, index) => (
             <tr key={indexOfFirstItem + location.uuid}>
-              <td>{location.id}</td>
+              <td>{index + 1}</td>
               <td>{location.name}</td>
               <td className="has-text-centered">
                 <Link
-
+                  to={`/locations/edit/${location.uuid}`}
                   className="button is-small is-warning"
                   style={{ width: '80px', }}
                 >
