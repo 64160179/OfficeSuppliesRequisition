@@ -287,6 +287,7 @@ video {
 // start sidebar
 .sidebar {
     width: 100%; // กำหนดความกว้างของ Sidebar ให้เต็มคอลัมน์
+
   
     .menu-label {
       font-size: 16px;
@@ -333,6 +334,73 @@ video {
       }
   }
 // end sidebar
+
+.location-table {
+    width: 99%;
+    table-layout: fixed; /* ใช้การจัดวางแบบคงที่ */
+  }
+  
+  .location-table th,
+  .location-table td {
+    width: 33.33%; /* กำหนดความกว้างของแต่ละคอลัมน์ให้เท่ากัน */
+  }
+
+.user-table {
+    width: 99%;
+    table-layout: fixed; /* ใช้การจัดวางแบบคงที่ */
+}
+  
+.user-table th,
+.user-table td {
+    width: 16.66%; /* กำหนดความกว้างของแต่ละคอลัมน์ให้เท่ากัน */
+}
+
+// start slider image
+.slider {
+    position: relative;
+    width: 99%;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.slider-image {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-image img {
+    width: 100%;
+    height: 400px;
+    flex-shrink: 0;
+}
+
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+// end slider image
+
 
 @media screen and (max-width:602px) {
 

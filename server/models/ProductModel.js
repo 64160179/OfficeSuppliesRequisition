@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import Locations from "./LocationModel.js";
+import CountingUnits from "./CountingUnitModel.js";
 
 const {DataTypes} = Sequelize;
 
@@ -25,13 +27,6 @@ const Products = db.define('products',{
             len: [3, 100]
         }
     },
-    unit:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate:{
-            notEmpty: true,
-        }
-    },
     quantity:{
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -39,28 +34,42 @@ const Products = db.define('products',{
             notEmpty: true
         }
     },
-    category:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate:{
-            notEmpty: true,
-        }
-    },
-    location:{
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate:{
-            notEmpty: true,
-        }
-    },
     visible: {
         type: DataTypes.ENUM,
         values: ['visible', 'hidden'],
         defaultValue: 'visible',
         allowNull: false
+    },
+    locationId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Locations,
+            key: 'id'
+        },
+        validate:{
+            notEmpty: true
+        }
+    },
+    countingunitsId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: CountingUnits,
+            key: 'id'
+        },
+        validate:{
+            notEmpty: true
+        }
     }
 },{
     freezeTableName: true
 });
+
+Locations.hasMany(Products, {foreignKey: 'locationId'});
+Products.belongsTo(Locations, {foreignKey: 'locationId'});
+
+CountingUnits.hasMany(Products, {foreignKey: 'countingunitsId'});
+Products.belongsTo(CountingUnits, {foreignKey: 'countingunitsId'});
 
 export default Products;

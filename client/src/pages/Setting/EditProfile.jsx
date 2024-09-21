@@ -1,6 +1,6 @@
 import React from 'react'
-import Layout from './Layout'
-import FormEditProfile from '../components/FormEditProfile'
+import Layout from '../Layout'
+import FormEditProfile from '../../components/Setting/FormEditProfile'
 
 const EditProfile = () => {
   return (

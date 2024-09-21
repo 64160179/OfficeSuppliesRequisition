@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('coding_db', 'root', '', {
+const db = new Sequelize('programming_folder', 'root', '', {
     host: "localhost",
     dialect: "mysql",
     timezone: "+07:00",

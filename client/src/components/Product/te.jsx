@@ -87,7 +87,6 @@ const ProductList = () => {
                         <th>ชื่อ</th>
                         <th>หน่วยนับ</th>
                         <th>จำนวน</th>
-                        <th>หมวดหมู่</th>
                         {user && user.role === "admin" && (
                             <th>สถานที่จัดเก็บ</th>
                         )}
@@ -114,15 +113,14 @@ const ProductList = () => {
                             <td>{product.name}</td>
                             <td>{product.unit}</td>
                             <td>{product.quantity}</td>
-                            <td>{product.category}</td>
                             {user && user.role === "admin" && (
                                 <td>{product.location}</td>
                             )}
                             {user && user.role === "admin" && (
                                 <td className="has-text-centered">
-                                    <Link to={`/products/edit/${product.uuid}`} 
-                                    className="button is-small is-warning"
-                                    style={{ width: '80px', }}
+                                    <Link to={`/products/edit/${product.uuid}`}
+                                        className="button is-small is-warning"
+                                        style={{ width: '80px', }}
                                     >
                                         <strong>แก้ไข</strong>
                                     </Link>

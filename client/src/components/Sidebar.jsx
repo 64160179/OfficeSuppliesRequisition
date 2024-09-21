@@ -33,7 +33,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-    <aside className="menu pl-3 has-shadow" style={{ marginTop: "70px"}}>
+    <aside className="menu pl-3 has-shadow" style={{ marginTop: "70px" }}>
       <p className="menu-label"><strong>ทั่วไป</strong></p>
       <ul className="menu-list">
         <li className="custom-font-size">
@@ -62,13 +62,13 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li className="custom-font-size">
-              <NavLink to={"/categories"} className="menu-item">
-                <BiSolidCategory className="menu-secoundary" /> จัดการหมวดหมู่
+              <NavLink to={"/countingunits"} className="menu-item">
+                <RiNumbersFill className="menu-secoundary" /> จัดการหน่วยนับ
               </NavLink>
             </li>
             <li className="custom-font-size">
-              <NavLink to={"/units"} className="menu-item">
-                <RiNumbersFill className="menu-secoundary" /> จัดการหน่วยนับ
+              <NavLink to={"/locations"} className="menu-item">
+                <BiSolidCategory className="menu-secoundary" /> จัดการที่จัดเก็บ
               </NavLink>
             </li>
           </ul>

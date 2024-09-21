@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { updateUser } from "../features/authSlice";
+import { updateUser } from "../../features/authSlice";
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { MdError, MdCheckCircle } from 'react-icons/md'; // จาก Material Design
@@ -18,6 +18,17 @@ const FormEditProfile = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const [showPassword, setShowPassword] = useState(false);
+
+    const handleCancel = () => {
+        // รีเซ็ตสถานะของฟอร์ม
+        setfName('');
+        setlName('');
+        setEmail('');
+        setPassword('');
+        setConfPassword('');
+        // ย้อนกลับไปหน้า /home
+        navigate('/home');
+    };
 
     // validated states
     const [lowerValidated, setLowerValidated] = useState(false);
@@ -291,12 +302,17 @@ const FormEditProfile = () => {
                                 </div>
                             </main>
                             <br />
-                            <div className="field">
+                            <div className="field is-grouped">
                                 <div className="control">
                                     <button type="submit" className="button is-success"
                                         disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
                                     >
                                         ยืนยันการแก้ไข
+                                    </button>
+                                </div>
+                                <div className="control">
+                                    <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
+                                        ยกเลิก
                                     </button>
                                 </div>
                             </div>

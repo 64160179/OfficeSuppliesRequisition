@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback  } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
+import '../../../src/App.css'
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -16,16 +18,31 @@ const UserList = () => {
     useEffect(() => {
         getUsers();
     }, [search, getUsers]); // โหลดข้อมูลใหม่เมื่อค่า search หรือ getUsers เปลี่ยนแปลง
-    
+
     const handleSearch = (e) => {
         setSearch(e.target.value); // อัปเดตค่าการค้นหาเมื่อผู้ใช้กรอกข้อมูล
     };
 
     const deleteUser = async (userId, userName) => {
-        const confirmDelete = window.confirm(`คุณยืนยันที่จะลบ ${userName} หรือไม่ ?`);
-        if (confirmDelete) {
+        const result = await Swal.fire({
+            title: 'คุณยืนยันที่จะลบ ?',
+            text: `คุณยืนยันที่จะลบ ${userName} หรือไม่ ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ใช่, ลบเลย !',
+            cancelButtonText: 'ยกเลิก'
+        });
+
+        if (result.isConfirmed) {
             await axios.delete(`http://localhost:5000/users/${userId}`);
             getUsers();
+            Swal.fire(
+                'ลบแล้ว !',
+                `${userName} ถูกลบเรียบร้อยแล้ว.`,
+                'success'
+            );
         }
     };
 
@@ -53,10 +70,12 @@ const UserList = () => {
                 <h1 className="title">รายชื่อผู้ใช้</h1>
                 <span className="subtitle">จำนวนผู้ใช้ทั้งหมด: {users.length}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px',width: '99%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
                 <Link to="/users/add" className="button is-link">
                     + เพิ่มผู้ใช้ใหม่
                 </Link>
+
+                {/* search bar */}
                 <input
                     type="text"
                     className="input"
@@ -66,14 +85,14 @@ const UserList = () => {
                     onChange={handleSearch} // ฟังก์ชันเรียกใช้งานเมื่อมีการกรอกข้อมูล
                 />
             </div>
-            <table className='table is-striped' style={{ width: '99%' }}>
+            <table className='table is-striped user-table'>
                 <thead>
                     <tr>
                         <th>ลำดับ</th>
                         <th>ชื่อจริง</th>
                         <th>นามสกุล</th>
                         <th>Email</th>
-                        <th>Role</th>
+                        <th className="has-text-centered">Role</th>
                         <th className="has-text-centered">อื่น ๆ</th>
                     </tr>
                 </thead>
@@ -84,7 +103,7 @@ const UserList = () => {
                             <td>{user.fname}</td>
                             <td>{user.lname}</td>
                             <td>{user.email}</td>
-                            <td>{user.role}</td>
+                            <td className="has-text-centered">{user.role}</td>
                             <td className="has-text-centered actions">
                                 <Link
                                     to={`/users/edit/${user.uuid}`}
@@ -105,6 +124,8 @@ const UserList = () => {
                     ))}
                 </tbody>
             </table>
+
+            {/* เมนูเลื่อนหน้า */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '99%' }}>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     <label htmlFor="itemsPerPage">แสดง : </label>

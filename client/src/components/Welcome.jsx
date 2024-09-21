@@ -1,23 +1,66 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from "react-redux";
-import img1 from "../asset/img1.png";
+import '../../src/App.css';
+
+import image1 from '../asset/image1.jpg';
+import image2 from '../asset/image2.jpg';
+import image3 from '../asset/image3.jpg';
+import image4 from '../asset/image4.jpg';
 
 const Welcome = () => {
   const { user } = useSelector((state) => state.auth);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const images = [
+    image1,
+    image2,
+    image3,
+    image4
+  ];
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  }, [images.length]);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  }, [images.length]);
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [nextSlide]); // เพิ่ม nextSlide ลงใน dependency array
 
   return (
     <div>
       <br />
-      <h1 className="title">หน้าหลัก</h1>
-      <h2 className="subtitle" style={{ marginTop: '20px' }}>
-        ยินดีต้อนรับ คุณ <strong>{user && user.fname}</strong> <strong>{user && user.lname}</strong>
-      </h2>
-
-      <div>
-        <img src={img1} alt="Welcome" style={{ width: '99%', height: '300px' }} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
+        <h1 className="title">หน้าหลัก</h1>
+        <span className="subtitle" style={{ marginRight: "5px" }}>ยินดีต้อนรับคุณ <strong>{user && user.fname}</strong> <strong>{user && user.lname}</strong></span>
       </div>
-
-      {/* <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+      
+      {/* start image slider */}
+      <div className="slider">
+        <button onClick={prevSlide} className="prev">
+          &#10094;
+        </button>
+        <div className="slider-image" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+          {images.map((image, index) => (
+            <img key={index} src={image} alt={`slide ${index}`} />
+          ))}
+        </div>
+        <button onClick={nextSlide} className="next">
+          &#10095;
+        </button>
+      </div>
+      {/* end image slider */}
+      
+      {/* start dashboard */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
         <div style={{ flex: '1', margin: '10px', padding: '20px', backgroundColor: '#00396b', textAlign: 'center', color: "#ffffff" }}>
           <h3>Dashboard 1</h3>
           <p>รายละเอียดของ Dashboard 1</p>
@@ -34,7 +77,8 @@ const Welcome = () => {
           <h3>Dashboard 4</h3>
           <p>รายละเอียดของ Dashboard 4</p>
         </div>
-      </div> */}
+      </div>
+      {/* end dashboard */}
 
     </div>
   );

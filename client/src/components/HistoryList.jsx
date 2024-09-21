@@ -1,14 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+
 
 const HistoryList = () => {
   return (
     <div>
     <br />   
     <h1 className="title">ประวัติการขอเบิก (ยังไม่ได้ทำอะไรเลย)</h1>
-    <Link to="/historys/add" className="button is-link mb-2">
-       + เพิ่มการเบิกวัสดุ
-    </Link>
     <table className='table is-striped is-fullwidth' style={{ width: '99%' }}>
         <thead>
             <tr>

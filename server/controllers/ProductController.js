@@ -1,5 +1,7 @@
 import Product from "../models/ProductModel.js";
 import User from "../models/UserModel.js";
+import Location from "../models/LocationModel.js";
+import CountingUnit from "../models/CountingUnitModel.js";
 
 export const getProducts = async (req, res) => {
     try {
@@ -68,21 +70,13 @@ const generateProductCode = async () => {
             attributes: ['code']
         });
 
-        // ถ้าไม่มีรหัสสินค้าล่าสุด ให้เริ่มต้นที่ A001
+        // ถ้าไม่มีสินค้าล่าสุด ให้เริ่มต้นที่ A001
         let newCode = 'A001';
-        if (latestProduct && latestProduct.code) {
-            const lastCode = latestProduct.code;
-            const numberPart = parseInt(lastCode.slice(1), 10);
-            const nextNumber = (numberPart + 1).toString().padStart(3, '0');
+        if (latestProduct && latestProduct.id) {
+            const nextId = latestProduct.id + 1;
+            const nextNumber = nextId.toString().padStart(3, '0');
             newCode = `A${nextNumber}`;
         }
-
-        // อัปเดตรหัสสินค้าล่าสุดในฟิลด์ `last_generated_code`
-        await Product.update(
-            { last_generated_code: newCode },
-            { where: { id: 1 } } // ใช้ ID ที่เหมาะสม หรือเพิ่มการจัดการ ID ใหม่
-        );
-
         return newCode;
     } catch (error) {
         console.error('Error generating product code:', error);
@@ -92,17 +86,36 @@ const generateProductCode = async () => {
 
 
 export const createProduct = async (req, res) => {
-    const { name, unit, quantity, category, location, visible } = req.body;
+    const { name, unit, quantity, location, visible } = req.body;
     try {
         const code = await generateProductCode();
+
+        // ดึงข้อมูล name จากตาราง Locations
+        const locationData = await Location.findOne({
+            where: { name: location },
+            attributes: ['name']
+        });
+
+        if (!locationData) {
+            return res.status(404).json({ msg: "ไม่พบสถานที่นี้ !" });
+        }
+        
+        // ดึงข้อมูล name จากตาราง CountingUnits
+        const countingUnitData = await CountingUnit.findOne({
+            where: { name: unit },
+            attributes: ['name']
+        });
+
+        if (!countingUnitData) {
+            return res.status(404).json({ msg: "ไม่พบหน่วยนับนี้ !" });
+        }
 
         await Product.create({
             code: code,
             name: name,
-            unit: unit,
             quantity: quantity,
-            category: category,
-            location: location,
+            unit: countingUnitData.name, // ใช้ name จากตาราง CountingUnits
+            location: locationData.name, // ใช้ name จากตาราง Locations
             visible: visible
         });
         res.status(201).json({ msg: "เพิ่มวัสดุ-อุปกรณ์สำเร็จ !" });

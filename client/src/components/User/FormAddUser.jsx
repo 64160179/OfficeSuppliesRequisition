@@ -59,29 +59,33 @@ const FormAddUser = () => {
                     <div className="content">
                         <form onSubmit={saveUser}>
                             <p className="has-text-centered" style={{ color: 'red' }}>{msg}</p>
-                            <div className="field">
-                                <label className="label">ชื่อจริง</label>
-                                <div className="control">
-                                    <input className="input"
-                                        type="text"
-                                        value={fname}
-                                        onChange={(e) => setfName(e.target.value)}
-                                        placeholder="กรุณากรอกชื่อจริง"
-                                        required
-                                    />
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <div className="field" style={{ flex: 1 }}>
+                                    <label className="label">ชื่อจริง</label>
+                                    <div className="control">
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            value={fname}
+                                            onChange={(e) => setfName(e.target.value)}
+                                            placeholder="กรุณากรอกชื่อจริง"
+                                            required
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="field">
-                                <label className="label">นามสกุล</label>
-                                <div className="control">
-                                    <input className="input"
-                                        type="text"
-                                        value={lname}
-                                        onChange={(e) => setlName(e.target.value)}
-                                        placeholder="กรุณากรอกชื่อนามสกุล"
-                                        required
-                                    />
+                                <div className="field" style={{ flex: 1 }}>
+                                    <label className="label">นามสกุล</label>
+                                    <div className="control">
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            value={lname}
+                                            onChange={(e) => setlName(e.target.value)}
+                                            placeholder="กรุณากรอกชื่อนามสกุล"
+                                            required
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
@@ -164,13 +168,13 @@ const FormAddUser = () => {
 
                             <div className="field is-grouped">
                                 <div className="control">
-                                    <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
-                                        ยกเลิก
+                                    <button type="submit" className="button is-success" style={{ width: "120px" }}>
+                                        บันทึกข้อมูล
                                     </button>
                                 </div>
                                 <div className="control">
-                                    <button type="submit" className="button is-success" style={{ width: "120px" }}>
-                                        บันทึกข้อมูล
+                                    <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
+                                        ยกเลิก
                                     </button>
                                 </div>
                             </div>

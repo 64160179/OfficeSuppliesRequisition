@@ -320,15 +320,15 @@ const FormEditUser = () => {
               <br />
               <div className="field is-grouped">
                 <div className="control">
-                  <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
-                    ยกเลิก
-                  </button>
-                </div>
-                <div className="control">
                   <button type="submit" className="button is-success"
                     disabled={!isChanged || (password !== "" && !(lowerValidated && upperValidated && numberValidated && specialValidated && lengthValidated))}
                   >
                     ยืนยันการแก้ไข
+                  </button>
+                </div>
+                <div className="control">
+                  <button type="button" onClick={handleCancel} className="button is-danger" style={{ width: "120px" }}>
+                    ยกเลิก
                   </button>
                 </div>
               </div>
