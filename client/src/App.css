@@ -482,7 +482,7 @@ video {
 }
 
 .close-modal-btn {
-  background-color: #6c757d;
+  background-color: red;
   color: white;
   border: none;
   padding: 10px;
@@ -493,7 +493,7 @@ video {
 }
 
 .close-modal-btn:hover {
-  background-color: #5a6268;
+  background-color: #cc0000;
 }
 
 .cart-modal-overlay {
@@ -539,6 +539,7 @@ video {
 }
 
 .modal-like-table td.item-name {
+  font-weight: 500;
   padding: 15px;
   width: 50%;
   /* ชื่อสินค้ากว้าง 50% ของตาราง */
