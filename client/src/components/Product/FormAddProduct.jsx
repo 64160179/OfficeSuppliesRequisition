@@ -99,6 +99,26 @@ const FormAddProduct = () => {
                                 </div>
 
                                 <div className="field" style={{ flex: 1 }}>
+                                    <label className="label">หน่วยนับ</label>
+                                    <div className="control">
+                                        <div className="is-fullwidth">
+                                            <Select
+                                                options={countingUnitOptions}
+                                                value={countingUnitOptions.find(option => option.value === selectedCountingUnit)}
+                                                onChange={(option) => setSelectedCountingUnit(option ? option.value : '')}
+                                                isClearable
+                                                placeholder="- เลือกหน่วยนับ -"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <br />
+
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <div className="field" style={{ flex: 1 }}>
                                     <label className="label">จำนวน</label>
                                     <div className="control">
                                         <input
@@ -116,25 +136,6 @@ const FormAddProduct = () => {
                                             min="1"
                                             required
                                         />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br />
-
-                            <div style={{ display: 'flex', gap: '10px' }}>
-                                <div className="field" style={{ flex: 1 }}>
-                                    <label className="label">หน่วยนับ</label>
-                                    <div className="control">
-                                        <div className="is-fullwidth">
-                                            <Select
-                                                options={countingUnitOptions}
-                                                value={countingUnitOptions.find(option => option.value === selectedCountingUnit)}
-                                                onChange={(option) => setSelectedCountingUnit(option ? option.value : '')}
-                                                isClearable
-                                                placeholder="- เลือกหน่วยนับ -"
-                                            />
-                                        </div>
                                     </div>
                                 </div>
 

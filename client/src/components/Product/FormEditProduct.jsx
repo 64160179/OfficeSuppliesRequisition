@@ -112,24 +112,6 @@ const FormEditProduct = () => {
                                 </div>
 
                                 <div className="field" style={{ flex: 1 }}>
-                                    <label className="label">จำนวน</label>
-                                    <div className="control">
-                                        <input
-                                            className="input"
-                                            type="number"
-                                            placeholder="กรุณากรอกจำนวน"
-                                            value={quantity}
-                                            onChange={(e) => setQuantity(e.target.value)}
-                                            min="1"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <br />
-                            <div style={{ display: 'flex', gap: '10px' }}>
-                                <div className="field" style={{ flex: 1 }}>
                                     <label className="label">หน่วยนับ</label>
                                     <div className="control">
                                         <div className="is-fullwidth">
@@ -143,6 +125,24 @@ const FormEditProduct = () => {
                                                 />
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <div className="field" style={{ flex: 1 }}>
+                                    <label className="label">จำนวน</label>
+                                    <div className="control">
+                                        <input
+                                            className="input"
+                                            type="number"
+                                            placeholder="กรุณากรอกจำนวน"
+                                            value={quantity}
+                                            onChange={(e) => setQuantity(e.target.value)}
+                                            min="1"
+                                            required
+                                        />
                                     </div>
                                 </div>
 

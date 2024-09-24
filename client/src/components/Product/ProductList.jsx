@@ -263,15 +263,15 @@ const ProductList = () => {
 
                         <th className="has-text-centered" style={{ width: '50px' }}>ลำดับ</th>
 
-                        <th className="has-text-centered" style={{ width: '100px' }}>รหัส</th>
+                        <th className="has-text-centered" style={{ width: '80px' }}>รหัส</th>
 
                         <th style={{ width: '200px' }}>ชื่อสินค้า</th>
 
-                        <th className="has-text-centered" style={{ width: '100px' }}>คงเหลือ</th>
+                        <th className="has-text-centered" style={{ width: '80px' }}>คงเหลือ</th>
 
-                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '100px' }}>หน่วยนับ</th>}
+                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '80px' }}>หน่วยนับ</th>}
 
-                        <th className="has-text-centered" style={{ width: '150px' }}>เพิ่มลงตระกร้า</th>
+                        <th className="has-text-centered" style={{ width: '120px' }}>เพิ่มลงตระกร้า</th>
 
                         {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '150px' }}>ที่จัดเก็บ</th>}
 
@@ -293,18 +293,18 @@ const ProductList = () => {
                                 </td>
                             }
 
-                            <td className="has-text-centered" style={{ width: '50px' }}>{indexOfFirstItem + product.id}</td>
+                            <td className="has-text-centered" style={{ width: '50px' }}>{product.id}</td>
 
                             <td className="has-text-centered" style={{ width: '100px' }}>{product.code}</td>
 
                             <td style={{ width: '200px' }}>{product.name}</td>
 
-                            <td className="has-text-centered" style={{ width: '100px' }}>{product.quantity}</td>
+                            <td className="has-text-centered" style={{ width: '80px' }}>{product.quantity}</td>
 
-                            {user && user.role === "admin" && <td className="has-text-centered" style={{ width: '150px' }}>{countingUnitMap[product.countingunitId]}</td>}
+                            {user && user.role === "admin" && <td className="has-text-centered" style={{ width: '80px' }}>{countingUnitMap[product.countingunitId]}</td>}
 
-                            <td className="has-text-centered" style={{ width: '150px' }}>
-                                <button onClick={() => addToCart(product)} className="button is-link" style={{ width: '50%', height: '30px' }}>
+                            <td className="has-text-centered" style={{ width: '120px' }}>
+                                <button onClick={() => addToCart(product)} className="button is-link" style={{ width: '80%', height: '30px' }}>
                                     + เพิ่ม
                                 </button>
                             </td>
@@ -315,14 +315,14 @@ const ProductList = () => {
                                 <td className="has-text-centered">
                                     <Link to={`/products/edit/${product.uuid}`}
                                         className="button is-small is-warning"
-                                        style={{ width: '40px', }}
+                                        style={{ width: '45px', }}
                                     >
                                         <strong>แก้ไข</strong>
                                     </Link>
                                     <button
                                         onClick={() => deleteProduct(product.uuid, product.name)}
                                         className="button is-small is-danger"
-                                        style={{ width: '40px', marginLeft: '5px' }}
+                                        style={{ width: '45px', marginLeft: '5px' }}
                                     >
                                         <strong>ลบ</strong>
                                     </button>

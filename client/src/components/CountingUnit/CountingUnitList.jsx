@@ -95,9 +95,9 @@ const CountingUnitList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentCountingUnits.map((countingUnit, index) => (
+          {currentCountingUnits.map((countingUnit) => (
             <tr key={indexOfFirstItem + countingUnit.uuid}>
-              <td>{index + 1}</td>
+              <td>{countingUnit.id}</td>
               <td>{countingUnit.name}</td>
               <td className="has-text-centered">
                 <Link

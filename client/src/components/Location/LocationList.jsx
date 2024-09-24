@@ -95,9 +95,9 @@ const LocationList = () => {
           </tr>
         </thead>
         <tbody>
-          {currentLocations.map((location, index) => (
+          {currentLocations.map((location) => (
             <tr key={indexOfFirstItem + location.uuid}>
-              <td>{index + 1}</td>
+              <td>{location.id}</td>
               <td>{location.name}</td>
               <td className="has-text-centered">
                 <Link
