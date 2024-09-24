@@ -51,7 +51,7 @@ const Products = db.define('products',{
             notEmpty: true
         }
     },
-    countingunitsId:{
+    countingunitId:{
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -69,7 +69,7 @@ const Products = db.define('products',{
 Locations.hasMany(Products, {foreignKey: 'locationId'});
 Products.belongsTo(Locations, {foreignKey: 'locationId'});
 
-CountingUnits.hasMany(Products, {foreignKey: 'countingunitsId'});
-Products.belongsTo(CountingUnits, {foreignKey: 'countingunitsId'});
+CountingUnits.hasMany(Products, {foreignKey: 'countingunitId'});
+Products.belongsTo(CountingUnits, {foreignKey: 'countingunitId'});
 
 export default Products;

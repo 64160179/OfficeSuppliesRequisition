@@ -68,7 +68,7 @@ const LocationList = () => {
       <br />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
         <h1 className="title">รายการสถานที่จัดเก็บ</h1>
-        <span className="subtitle">จำนวนทั้งหมด: {locations.length}</span>
+        <span className="subtitle">จำนวนทั้งหมด:<strong> {locations.length} </strong> สถานที่</span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
         <Link to="/locations/add" className="button is-link">

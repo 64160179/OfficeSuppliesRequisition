@@ -68,7 +68,7 @@ const CountingUnitList = () => {
       <br />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
         <h1 className="title">รายการหน่วยนับ</h1>
-        <span className="subtitle">จำนวนทั้งหมด: {countingUnits.length}</span>
+        <span className="subtitle">จำนวนทั้งหมด:<strong> {countingUnits.length} </strong> หน่วย</span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
         <Link to="/countingunits/add" className="button is-link">

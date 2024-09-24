@@ -68,8 +68,9 @@ const UserList = () => {
             <br />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
                 <h1 className="title">รายชื่อผู้ใช้</h1>
-                <span className="subtitle">จำนวนผู้ใช้ทั้งหมด: {users.length}</span>
+                <span className="subtitle">จำนวนผู้ใช้ทั้งหมด:<strong> {users.length} </strong>คน</span>
             </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', width: '99%' }}>
                 <Link to="/users/add" className="button is-link">
                     + เพิ่มผู้ใช้ใหม่

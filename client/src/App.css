@@ -296,22 +296,26 @@ video {
 
 .location-table {
   width: 99%;
-  table-layout: fixed; /* ใช้การจัดวางแบบคงที่ */
+  table-layout: fixed;
+  /* ใช้การจัดวางแบบคงที่ */
 }
 
 .location-table th,
 .location-table td {
-  width: 33.33%; /* กำหนดความกว้างของแต่ละคอลัมน์ให้เท่ากัน */
+  width: 33.33%;
+  /* กำหนดความกว้างของแต่ละคอลัมน์ให้เท่ากัน */
 }
 
 .user-table {
   width: 99%;
-  table-layout: fixed; /* ใช้การจัดวางแบบคงที่ */
+  table-layout: fixed;
+  /* ใช้การจัดวางแบบคงที่ */
 }
 
 .user-table th,
 .user-table td {
-  width: 16.66%; /* กำหนดความกว้างของแต่ละคอลัมน์ให้เท่ากัน */
+  width: 16.66%;
+  /* กำหนดความกว้างของแต่ละคอลัมน์ให้เท่ากัน */
 }
 
 .slider {
@@ -356,6 +360,264 @@ video {
 .prev:hover,
 .next:hover {
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+.floating-cart-btn {
+  position: fixed;
+  top: 30px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-preview {
+  position: fixed;
+  top: 55px;
+  right: 100px;
+  width: 200px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 10px;
+}
+
+.cart-preview ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-preview li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.cart-preview li:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.cart-preview .item-name {
+  flex: 1;
+}
+
+.cart-preview .item-quantity {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+/* modal style */
+.cart-modal {
+  margin-top: 120px;
+  width: 800px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  /* เปลี่ยนพื้นหลังเป็นสีอ่อน */
+  position: relative;
+  border-radius: 10px;
+  /* ปรับขอบมนให้มากขึ้น */
+  max-height: 1000px;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  /* เพิ่มเงา */
+}
+
+.cart-modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cart-modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cart-item {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  /* เพิ่มเส้นแบ่งระหว่างสินค้า */
+}
+
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.checkout-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #218838;
+  /* เปลี่ยนสีเมื่อโฮเวอร์ */
+}
+
+.close-modal-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.close-modal-btn:hover {
+  background-color: #5a6268;
+}
+
+.cart-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  /* ทำให้พื้นหลังมืดลง */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-like-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* modal td th */
+.modal-like-table th.item-name {
+  text-align: left;
+  width: 50%;
+  /* ชื่อสินค้ากว้าง 50% ของตาราง */
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-like-table th.item-quantity {
+  text-align: center;
+  justify-content: center;
+  width: 30%;
+  /* จำนวนกว้าง 30% ของตาราง */
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-like-table th.item-actions {
+  text-align: center;
+  justify-content: center;
+  width: 20%;
+  /* อื่น ๆ กว้าง 20% ของตาราง */
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-like-table td.item-name {
+  padding: 15px;
+  width: 50%;
+  /* ชื่อสินค้ากว้าง 50% ของตาราง */
+}
+
+.modal-like-table td.item-quantity {
+  padding: 15px;
+  text-align: center;
+  justify-content: center;
+  width: 30%;
+  /* จำนวนกว้าง 30% ของตาราง */
+}
+
+.modal-like-table td.item-actions {
+  padding: 15px;
+  text-align: center;
+  justify-content: center;
+  width: 20%;
+  /* อื่น ๆ กว้าง 20% ของตาราง */
+}
+
+/* ปรับการจัดวางของจำนวน */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-controls input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.quantity-controls button {
+  background-color: white;
+  /* พื้นหลังปุ่มเป็นสีขาว */
+  color: #007bff;
+  /* สีตัวอักษรเป็นสีฟ้า */
+  border: 1px solid #007bff;
+  /* ขอบปุ่มเป็นสีฟ้า */
+  padding: 1px 8px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  /* เพิ่มการเปลี่ยนแปลงสีเมื่อ hover */
+}
+
+.quantity-controls button:hover {
+  background-color: white;
+  /* พื้นหลังยังคงเป็นสีขาวเมื่อ hover */
+  color: #0056b3;
+  /* เปลี่ยนสีตัวอักษรเป็นสีเข้มขึ้นเมื่อ hover */
+  border: 1px solid #0056b3;
+  /* เปลี่ยนสีขอบเป็นสีเข้มขึ้นเมื่อ hover */
+}
+
+.quantity-controls .decrease-btn {
+  margin-right: 8px;
+}
+
+.quantity-controls .increase-btn {
+  margin-left: 8px;
+}
+
+/* ปุ่มลบ */
+.modal-like-table .item-actions .remove-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-like-table .item-actions .remove-btn:hover {
+  background-color: #cc0000;
 }
 
 @media screen and (max-width: 602px) {

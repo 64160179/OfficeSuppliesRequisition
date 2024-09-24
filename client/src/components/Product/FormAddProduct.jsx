@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Select from 'react-select'; // นำเข้า react-select
 
 const FormAddProduct = () => {
-    const [countingUnits, setCountingUnits] = useState([]);
-    const [locations, setLocations] = useState([]);
+    const [countingUnit, setCountingUnit] = useState([]);
+    const [location, setLocations] = useState([]);
     const [selectedCountingUnit, setSelectedCountingUnit] = useState('');
     const [selectedLocation, setSelectedLocation] = useState('');
     const [name, setName] = useState('');
@@ -28,7 +28,7 @@ const FormAddProduct = () => {
         const fetchCountingUnits = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/countingUnits');
-                setCountingUnits(response.data);
+                setCountingUnit(response.data);
             } catch (error) {
                 console.error('Error fetching counting units:', error);
             }
@@ -54,7 +54,7 @@ const FormAddProduct = () => {
                 name: name,
                 quantity: quantity,
                 locationId: selectedLocation,
-                countingunitsId: selectedCountingUnit
+                countingunitId: selectedCountingUnit
             });
             navigate("/products");
         } catch (error) {
@@ -64,36 +64,35 @@ const FormAddProduct = () => {
         }
     };
 
-    const locationOptions = locations.map((location) => ({
+    const locationOptions = location.map((location) => ({
         value: location.id,
         label: location.name
     }));
 
-    const countingUnitOptions = countingUnits.map((countingUnit) => ({
+    const countingUnitOptions = countingUnit.map((countingUnit) => ({
         value: countingUnit.id,
         label: countingUnit.name
     }));
-
 
     return (
         <div>
             <br />
             <h1 className="title">เพิ่มวัสดุ - อุปกรณ์ชิ้นใหม่</h1>
-            <div className="card is-shadowless">
+            <div className="card is-shadowless" style={{ width: '99%' }}>
                 <div className="card-content">
                     <div className="content">
                         <form onSubmit={saveProduct}>
                             <p className="has-text-centered" style={{ color: 'red' }}>{msg}</p>
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <div className="field" style={{ flex: 1 }}>
-                                    <label className="label">ชื่อวัสดุ - อุปกรณ์</label>
+                                    <label className="label">ชื่อสินค้า</label>
                                     <div className="control">
                                         <input
                                             className="input"
                                             type="text"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                            placeholder="กรุณากรอกชื่อวัสดุ - อุปกรณ์"
+                                            placeholder="กรุณากรอกชื่อสินค้า"
                                             required
                                         />
                                     </div>
@@ -121,34 +120,36 @@ const FormAddProduct = () => {
                                 </div>
                             </div>
 
+                            <br />
 
-
-                            <div className="field">
-                                <label className="label">หน่วยนับ</label>
-                                <div className="control">
-                                    <div className="is-fullwidth">
-                                        <Select
-                                            options={countingUnitOptions}
-                                            value={countingUnitOptions.find(option => option.value === selectedCountingUnit)}
-                                            onChange={(option) => setSelectedCountingUnit(option ? option.value : '')}
-                                            isClearable
-                                            placeholder="- เลือกหน่วยนับ -"
-                                        />
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <div className="field" style={{ flex: 1 }}>
+                                    <label className="label">หน่วยนับ</label>
+                                    <div className="control">
+                                        <div className="is-fullwidth">
+                                            <Select
+                                                options={countingUnitOptions}
+                                                value={countingUnitOptions.find(option => option.value === selectedCountingUnit)}
+                                                onChange={(option) => setSelectedCountingUnit(option ? option.value : '')}
+                                                isClearable
+                                                placeholder="- เลือกหน่วยนับ -"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div className="field">
-                                <label className="label">สถานที่จัดเก็บ</label>
-                                <div className="control">
-                                    <div className="is-fullwidth">
-                                        <Select
-                                            options={locationOptions}
-                                            value={locationOptions.find(option => option.value === selectedLocation)}
-                                            onChange={(option) => setSelectedLocation(option ? option.value : '')}
-                                            isClearable
-                                            placeholder="- เลือกสถานที่จัดเก็บ -"
-                                        />
+                                <div className="field" style={{ flex: 1 }}>
+                                    <label className="label">สถานที่จัดเก็บ</label>
+                                    <div className="control">
+                                        <div className="is-fullwidth">
+                                            <Select
+                                                options={locationOptions}
+                                                value={locationOptions.find(option => option.value === selectedLocation)}
+                                                onChange={(option) => setSelectedLocation(option ? option.value : '')}
+                                                isClearable
+                                                placeholder="- เลือกสถานที่จัดเก็บ -"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -5,6 +5,7 @@ export const getCountingUnit = async (req, res) => {
     const search = req.query.search || '';
     try {
         const response = await CountingUnits.findAll({
+            attributes: ['id', 'uuid', 'name'],
             where: {
                 [Op.or]: [
                     { name: { [Op.like]: `%${search}%` } }
