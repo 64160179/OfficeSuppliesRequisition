@@ -18,6 +18,18 @@ export const getCountingUnit = async (req, res) => {
     }
 }
 
+export const getCountingUnitToShow = async (req, res) => {
+    try {
+        const response = await CountingUnits.findAll({
+            attributes: ['id', 'uuid', 'name'],
+            order: [['name', 'ASC']]
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
 export const getCountingUnitById = async (req, res) => {
     try {
         const response = await CountingUnits.findOne({

@@ -86,21 +86,21 @@ const UserList = () => {
                     onChange={handleSearch} // ฟังก์ชันเรียกใช้งานเมื่อมีการกรอกข้อมูล
                 />
             </div>
-            <table className='table is-striped user-table'>
+            <table className='table is-bordered' style={{ width: '99%' }}>
                 <thead>
                     <tr>
-                        <th>ลำดับ</th>
-                        <th>ชื่อจริง</th>
-                        <th>นามสกุล</th>
-                        <th>Email</th>
-                        <th className="has-text-centered">Role</th>
-                        <th className="has-text-centered">อื่น ๆ</th>
+                        <th className="has-text-centered" style={{ backgroundColor: "rgb(255,255,204)", width: '50px' }}>ลำดับ</th>
+                        <th style={{ backgroundColor: "rgb(255,255,204)", width: '300px' }}>ชื่อจริง</th>
+                        <th style={{ backgroundColor: "rgb(255,255,204)", width: '300px' }}>นามสกุล</th>
+                        <th className="has-text-centered" style={{ backgroundColor: "rgb(226,239,217)", width: '250px' }}>อีเมล</th>
+                        <th className="has-text-centered" style={{ backgroundColor: "rgb(226,239,217)", width: '150px' }}>สิทธิ์การใช้งาน</th>
+                        <th className="has-text-centered" style={{ backgroundColor: "rgb(252,225,214)", width: '180px' }}>อื่น ๆ</th>
                     </tr>
                 </thead>
                 <tbody>
                     {currentUsers.map((user) => (
                         <tr key={indexOfFirstItem + user.uuid}>
-                            <td>{user.id}</td>
+                            <td className="has-text-centered">{user.id}</td>
                             <td>{user.fname}</td>
                             <td>{user.lname}</td>
                             <td>{user.email}</td>
@@ -109,14 +109,14 @@ const UserList = () => {
                                 <Link
                                     to={`/users/edit/${user.uuid}`}
                                     className="button is-small is-warning"
-                                    style={{ width: '80px', }}
+                                    style={{ width: '60px', }}
                                 >
                                     <strong>แก้ไข</strong>
                                 </Link>
                                 <button
                                     onClick={() => deleteUser(user.uuid, user.fname)}
                                     className="button is-small is-danger"
-                                    style={{ width: '80px', marginLeft: '10px' }}
+                                    style={{ width: '60px', marginLeft: '10px' }}
                                 >
                                     <strong>ลบ</strong>
                                 </button>

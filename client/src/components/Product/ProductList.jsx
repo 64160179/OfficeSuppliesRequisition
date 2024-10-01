@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Swal from 'sweetalert2';
 import Modal from 'react-modal';
@@ -17,6 +17,11 @@ const ProductList = () => {
     const [cart, setCart] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false); // state สำหรับเปิด/ปิดโมดอล
     const [isCartHovered, setIsCartHovered] = useState(false);
+    const navigate = useNavigate();
+
+    const handleCheckout = () => {
+        navigate('/checkout', { state: { cart } });
+    };
 
     const getProducts = useCallback(async () => {
         const response = await axios.get(`http://localhost:5000/products?search=${search}`);
@@ -34,7 +39,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchCountingUnits = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/countingUnits');
+                const response = await axios.get('http://localhost:5000/countingUnits/show');
                 setCountingUnits(response.data);
             } catch (error) {
                 console.error('Error fetching counting units:', error);
@@ -247,7 +252,7 @@ const ProductList = () => {
                     <input
                         type="text"
                         className="input"
-                        placeholder="ค้นหา รหัส, ชื่อวัสดุ - อุปกรณ์"
+                        placeholder="ค้นหา รหัส, ชื่อวัสดุ - อุปกรณ์, หน่วยนับ"
                         style={{ flex: 1 }}
                         value={search}  // กำหนดค่า search ใน input
                         onChange={handleSearch} // ฟังก์ชันเรียกใช้งานเมื่อมีการกรอกข้อมูล
@@ -255,27 +260,28 @@ const ProductList = () => {
                 )}
             </div>
 
-            <table className="location-table table is-striped">
+            <table className="location-table table is-bordered ">
                 <thead>
                     <tr>
 
-                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '50px' }}>BOX</th>}
+                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '50px', backgroundColor: "rgb(255,255,204)" }}>BOX</th>}
 
-                        <th className="has-text-centered" style={{ width: '50px' }}>ลำดับ</th>
+                        <th className="has-text-centered" style={{ width: '50px', backgroundColor: "rgb(255,255,204)" }}>ลำดับ</th>
 
-                        <th className="has-text-centered" style={{ width: '80px' }}>รหัส</th>
+                        <th className="has-text-centered" style={{ width: '80px', backgroundColor: "rgb(255,255,204)" }}>รหัส</th>
 
-                        <th style={{ width: '200px' }}>ชื่อสินค้า</th>
+                        <th style={{ width: '200px', backgroundColor: "rgb(255,255,204)" }}>ชื่อสินค้า</th>
 
-                        <th className="has-text-centered" style={{ width: '80px' }}>คงเหลือ</th>
+                        <th className="has-text-centered" style={{ width: '80px', backgroundColor: "rgb(226,239,217)" }}>คงเหลือ</th>
+                        
+                        <th className="has-text-centered" style={{ width: '80px', backgroundColor: "rgb(226,239,217)" }}>หน่วยนับ</th>
 
-                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '80px' }}>หน่วยนับ</th>}
+                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '120px', backgroundColor: "rgb(255,255,204)" }}>เพิ่มลงตระกร้า</th>}
+                        {user && user.role === "user" && <th className="has-text-centered" style={{ width: '120px', backgroundColor: "rgb(252,225,214)" }}>เพิ่มลงตระกร้า</th>}
 
-                        <th className="has-text-centered" style={{ width: '120px' }}>เพิ่มลงตระกร้า</th>
+                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '150px', backgroundColor: "rgb(255,255,204)" }}>ที่จัดเก็บ</th>}
 
-                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '150px' }}>ที่จัดเก็บ</th>}
-
-                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '100px' }}>อื่น ๆ</th>}
+                        {user && user.role === "admin" && <th className="has-text-centered" style={{ width: '100px', backgroundColor: "rgb(252,225,214)" }}>อื่น ๆ</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -300,8 +306,8 @@ const ProductList = () => {
                             <td style={{ width: '200px' }}>{product.name}</td>
 
                             <td className="has-text-centered" style={{ width: '80px' }}>{product.quantity}</td>
-
-                            {user && user.role === "admin" && <td className="has-text-centered" style={{ width: '80px' }}>{countingUnitMap[product.countingunitId]}</td>}
+                            
+                            <td className="has-text-centered" style={{ width: '80px' }}>{countingUnitMap[product.countingunitId]}</td>
 
                             <td className="has-text-centered" style={{ width: '120px' }}>
                                 <button onClick={() => addToCart(product)} className="button is-link" style={{ width: '80%', height: '30px' }}>
@@ -345,7 +351,9 @@ const ProductList = () => {
                 {cart.length === 0 ? (
                     <div style={{ textAlign: 'center' }}>
                         <strong><p>ไม่มีสินค้าในตะกร้า</p></strong>
+                        <br />
                     </div>
+
                 ) : (
                     <table className='modal-like-table'>
                         <thead >
@@ -358,21 +366,21 @@ const ProductList = () => {
                         <tbody>
                             {cart.map((item) => (
                                 <tr key={item.id} className="cart-item">
-                                        <td className="item-name">{item.name}</td>
-                                        <td className="item-quantity">
-                                            <div className="quantity-controls">
-                                                <button className="decrease-btn" onClick={() => decreaseQuantity(item.id)} >-</button>
-                                                <input
-                                                    type="text"
-                                                    value={item.quantity}
-                                                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-                                                />
-                                                <button className="increase-btn" onClick={() => increaseQuantity(item.id)} >+</button>
-                                            </div>
-                                        </td>
-                                        <td className="item-actions">
-                                            <button className="remove-btn" onClick={() => removeFromCart(item.id)}>ลบ</button>
-                                        </td>
+                                    <td className="item-name">{item.name}</td>
+                                    <td className="item-quantity">
+                                        <div className="quantity-controls">
+                                            <button className="decrease-btn" onClick={() => decreaseQuantity(item.id)} >-</button>
+                                            <input
+                                                type="text"
+                                                value={item.quantity}
+                                                onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
+                                            />
+                                            <button className="increase-btn" onClick={() => increaseQuantity(item.id)} >+</button>
+                                        </div>
+                                    </td>
+                                    <td className="item-actions">
+                                        <button className="remove-btn" onClick={() => removeFromCart(item.id)}>ลบ</button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -383,7 +391,11 @@ const ProductList = () => {
                 <div className="cart-footer">
                     {/* แสดงปุ่ม "ไปที่หน้า Checkout" เฉพาะเมื่อมีสินค้าในตะกร้า */}
                     {cart.length > 0 && (
-                        <button className="checkout-btn">ไปที่หน้า Checkout</button>
+                        <button
+                            className="checkout-btn"
+                            onClick={handleCheckout}
+                        >
+                            ไปที่หน้า Checkout</button>
                     )}
                     <button className="close-modal-btn" onClick={() => setIsCartOpen(false)}>
                         ปิด

@@ -2,12 +2,13 @@ import Product from "../models/ProductModel.js";
 import User from "../models/UserModel.js";
 import Locations from "../models/LocationModel.js";
 import CountingUnits from "../models/CountingUnitModel.js";
+import CodeNumberModel from "../models/CodeNumberModel.js";
 import { Op } from "sequelize";
+import Receives from "../models/ReceiveModel.js";
 
 export const getProducts = async (req, res) => {
     // รับค่าการค้นหาจาก query string
     const search = req.query.search || ''; // ถ้าไม่มีค่า search จะใช้ค่าเริ่มต้นเป็นค่าว่าง
-
 
     try {
         let response;
@@ -43,13 +44,24 @@ export const getProducts = async (req, res) => {
             });
         } else {
             response = await Product.findAll({
-                attributes: ['id', 'uuid', 'code', 'name', 'quantity', 'visible'],
+                attributes: ['id', 'uuid', 'code', 'name', 'quantity', 'visible', 'locationId', 'countingunitId'],
+                include: [
+                    {
+                        model: CountingUnits,
+                        attributes: ['name'],
+                        where: {
+                            name: { [Op.like]: `%${search}%` }
+                        },
+                        required: false // ทำให้การรวมนี้เป็น optional
+                    }
+                ],
                 where: {
                     visible: true,
                     // ใช้ Op.or เพื่อค้นหาหลายฟิลด์พร้อมกัน
                     [Op.or]: [
                         { name: { [Op.like]: `%${search}%` } },
                         { code: { [Op.like]: `%${search}%` } },
+                        { '$CountingUnit.name$': { [Op.like]: `%${search}%` } }
                     ]
                 },
             });
@@ -104,35 +116,82 @@ export const getProductById = async (req, res) => {
     }
 }
 
+export const getProductToDetail = async (req, res) => {
+    try {
+        const product = await Product.findOne({
+            where: {
+                uuid: req.params.id
+            }
+        });
+        if (!product) return res.status(404).json({ msg: "ไม่พบข้อมูล !" });
+        let response;
+        if (req.role === "admin") {
+            response = await Product.findOne({
+                attributes: ['id', 'uuid', 'code', 'name', 'quantity', 'visible', 'locationId', 'countingunitId'],
+                where: {
+                    id: product.id
+                },
+                include: [
+                    {
+                        model: Locations,
+                        attributes: ['name']
+                    },
+                    {
+                        model: CountingUnits,
+                        attributes: ['name']
+                    }
+                ]
+            });
+        } else {
+            response = await Product.findOne({
+                attributes: ['id', 'uuid', 'code', 'name', 'unit', 'quantity', 'category'],
+                where: {
+                    [Op.and]: [{ id: product.id }, { userId: req.userId }], visible: 'visible'
+                },
+                include: [{
+                    model: User,
+                    attributes: ['name', 'email']
+                }]
+            });
+        }
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
 const generateProductCode = async () => {
     try {
-        const products = await Product.findAll({
-            attributes: ['code'],
-            order: [['id', 'ASC']]
-        });
+        let codeNumber = await CodeNumberModel.findOne();
 
-        let newCode = 'A001';
-        if (products.length > 0) {
-            const codes = products.map(product => product.code);
-            let maxNumber = 0;
-
-            codes.forEach(code => {
-                const number = parseInt(code.slice(1), 10);
-                if (number > maxNumber) {
-                    maxNumber = number;
-                }
+        if (!codeNumber) {
+            //  ถ้าไม่มีให้สร้างใหม่ และเริ่มที่ 0
+            codeNumber = await CodeNumberModel.create({
+                last_code_number: 0
             });
-
-            let nextNumber = maxNumber + 1;
-            newCode = `A${nextNumber.toString().padStart(3, '0')}`;
         }
 
-        return newCode;
+        // ดึงเลขสูงสุดที่เคยถูกใช้มา
+        const lastNumber = codeNumber.last_code_number;
+
+        // สร้าง product code ใหม่
+        const nextNumber = lastNumber + 1;
+        const newcode = `A${nextNumber.toString().padStart(3, '0')}`;
+
+        // อัปเดตค่าตัวเลขล่าสุดใน settings
+        await codeNumber.update({ last_code_number: nextNumber },{
+            where: {
+                id: codeNumber.id
+            }
+        });
+
+        return newcode;
     } catch (error) {
         console.error('Error generating product code:', error);
         throw error;
     }
-}
+};
+
 
 export const createProduct = async (req, res) => {
     const { name, countingunitId, quantity, locationId, visible } = req.body;

@@ -150,7 +150,7 @@ const FormAddProduct = () => {
                                     </div>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                             <div className="field is-grouped">
                                 <div className="control">
                                     <button type="submit" className="button is-success" style={{ width: "120px" }}>

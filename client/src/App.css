@@ -540,7 +540,7 @@ video {
 
 .modal-like-table td.item-name {
   font-weight: 500;
-  padding: 15px;
+  padding: 20px;
   width: 50%;
   /* ชื่อสินค้ากว้าง 50% ของตาราง */
 }
@@ -583,7 +583,7 @@ video {
   /* สีตัวอักษรเป็นสีฟ้า */
   border: 1px solid #007bff;
   /* ขอบปุ่มเป็นสีฟ้า */
-  padding: 1px 8px;
+  padding: 3px 10px;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
@@ -619,6 +619,30 @@ video {
 
 .modal-like-table .item-actions .remove-btn:hover {
   background-color: #cc0000;
+}
+
+.fixed-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.fixed-table th,
+.fixed-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fixed-table th:nth-child(2),
+.fixed-table td:nth-child(2) {
+  width: 200px;
+  /* กำหนดความกว้างคงที่ให้กับคอลัมน์ที่สอง */
+}
+
+.product-details p {
+  display: inline;
+  margin-right: 10px;
+  /* เพิ่มระยะห่างระหว่างแต่ละ p */
 }
 
 @media screen and (max-width: 602px) {

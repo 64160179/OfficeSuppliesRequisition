@@ -86,19 +86,19 @@ const CountingUnitList = () => {
         />
       </div>
 
-      <table className="location-table table is-striped">
+      <table className="location-table table is-bordered ">
         <thead>
           <tr>
-            <th>ลำดับ</th>
-            <th>ชื่อ</th>
-            <th className="has-text-centered">อื่น ๆ</th>
+            <th className="has-text-centered" style={{ backgroundColor: "rgb(255,255,204)" }}>ลำดับ</th>
+            <th className="has-text-centered" style={{ backgroundColor: "rgb(226,239,217)" }}>ชื่อ</th>
+            <th className="has-text-centered" style={{ backgroundColor: "rgb(252,225,214)" }}>อื่น ๆ</th>
           </tr>
         </thead>
         <tbody>
           {currentCountingUnits.map((countingUnit) => (
             <tr key={indexOfFirstItem + countingUnit.uuid}>
-              <td>{countingUnit.id}</td>
-              <td>{countingUnit.name}</td>
+              <td className="has-text-centered">{countingUnit.id}</td>
+              <td className="has-text-centered">{countingUnit.name}</td>
               <td className="has-text-centered">
                 <Link
                   to={`/countingunits/edit/${countingUnit.uuid}`}

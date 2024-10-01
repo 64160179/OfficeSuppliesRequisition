@@ -86,19 +86,19 @@ const LocationList = () => {
         />
       </div>
 
-      <table className="location-table table is-striped">
+      <table className="location-table table is-bordered ">
         <thead>
           <tr>
-            <th>ลำดับ</th>
-            <th>ชื่อ</th>
-            <th className="has-text-centered">อื่น ๆ</th>
+            <th className="has-text-centered" style={{ backgroundColor: "rgb(255,255,204)" }}>ลำดับ</th>
+            <th className="has-text-centered" style={{ backgroundColor: "rgb(226,239,217)" }}>ชื่อ</th>
+            <th className="has-text-centered" style={{ backgroundColor: "rgb(252,225,214)" }}>อื่น ๆ</th>
           </tr>
         </thead>
         <tbody>
           {currentLocations.map((location) => (
             <tr key={indexOfFirstItem + location.uuid}>
-              <td>{location.id}</td>
-              <td>{location.name}</td>
+              <td className="has-text-centered">{location.id}</td>
+              <td className="has-text-centered">{location.name}</td>
               <td className="has-text-centered">
                 <Link
                   to={`/locations/edit/${location.uuid}`}

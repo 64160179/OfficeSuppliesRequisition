@@ -2,10 +2,11 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from "react-redux";
 import '../../src/App.css';
 
-import image1 from '../asset/image1.jpg';
-import image2 from '../asset/image2.jpg';
-import image3 from '../asset/image3.jpg';
-import image4 from '../asset/image4.jpg';
+import image1 from '../asset/image1.png';
+import image2 from '../asset/image2.png';
+import image3 from '../asset/image3.png';
+import image4 from '../asset/image4.png';
+import image5 from '../asset/image5.png';
 
 const Welcome = () => {
   const { user } = useSelector((state) => state.auth);
@@ -15,7 +16,8 @@ const Welcome = () => {
     image1,
     image2,
     image3,
-    image4
+    image4,
+    image5
   ];
 
   const prevSlide = useCallback(() => {
@@ -31,7 +33,7 @@ const Welcome = () => {
   }, [images.length]);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
+    const interval = setInterval(nextSlide, 10000);
     return () => clearInterval(interval);
   }, [nextSlide]); // เพิ่ม nextSlide ลงใน dependency array
 

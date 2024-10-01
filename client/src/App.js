@@ -12,6 +12,9 @@ import EditProfile from './pages/Setting/EditProfile.jsx';
 import Products from './pages/Product/Products.jsx';
 import AddProduct from './pages/Product/AddProduct.jsx';
 import EditProduct from './pages/Product/EditProduct.jsx';
+import ProductDetail from './pages/Product/ProductDetail.jsx';
+import Summary from './pages/Product/Summary.jsx';
+import BuyInProduct from './pages/Product/BuyInProduct.jsx';
 
 import Historys from './pages/Historys.jsx';
 
@@ -22,6 +25,8 @@ import EditLocation from './pages/Location/EditLocation.jsx';
 import CountingUnit from './pages/CountingUnit/CountingUnit.jsx';
 import AddCountingUnit from './pages/CountingUnit/AddCountingUnit.jsx';
 import EditCountingUnit from './pages/CountingUnit/EditCountingUnit.jsx';
+
+import Checkout from './pages/Checkout/Checkout.jsx';
 
 
 function App() {
@@ -40,6 +45,9 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/products/add" element={<AddProduct />} />
           <Route path="/products/edit/:id" element={<EditProduct />} />
+          <Route path="/products/detail/:id" element={<ProductDetail />} />
+          <Route path="/summary" element={<Summary />} />
+          <Route path="/products/buyin" element={<BuyInProduct />} />
 
           <Route path="/historys" element={<Historys />} />
 
@@ -50,6 +58,8 @@ function App() {
           <Route path="/countingunits" element={<CountingUnit />}/>
           <Route path="/countingunits/add" element={<AddCountingUnit />} />
           <Route path="/countingunits/edit/:id" element={<EditCountingUnit />} />
+
+          <Route path="/checkout" element={<Checkout />} />
 
         </Routes>
       </BrowserRouter>

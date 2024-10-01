@@ -9,6 +9,7 @@ import ProductRoute from "./routes/ProductRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import LocationRoute from "./routes/LocationRoute.js";
 import CountingRoute from "./routes/CountingRoute.js";
+import CodeNumberModel from "./models/CodeNumberModel.js";
 dotenv.config();
 
 const app = express();
@@ -19,9 +20,15 @@ const store = new sessionStore({
     db: db
 });
 
-// (async()=>{
-//     await db.sync();
-// })();
+(async () => {
+    try {
+        // ซิงค์โมเดลกับฐานข้อมูล
+        await db.sync();
+        console.log("Database synced successfully.");
+    } catch (error) {
+        console.error("Unable to sync database:", error);
+    }
+})();
 
 app.use(session({
     secret: process.env.SESS_SECRET,
@@ -46,7 +53,7 @@ app.use(AuthRoute);
 app.use(LocationRoute);
 app.use(CountingRoute);
 
-// store.sync();
+store.sync();
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running on port 5000 ...');
