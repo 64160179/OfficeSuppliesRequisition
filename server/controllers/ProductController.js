@@ -4,7 +4,6 @@ import Locations from "../models/LocationModel.js";
 import CountingUnits from "../models/CountingUnitModel.js";
 import CodeNumberModel from "../models/CodeNumberModel.js";
 import { Op } from "sequelize";
-import Receives from "../models/ReceiveModel.js";
 
 export const getProducts = async (req, res) => {
     // รับค่าการค้นหาจาก query string

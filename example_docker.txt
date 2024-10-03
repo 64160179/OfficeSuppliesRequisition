@@ -1,0 +1,155 @@
+///////////////////////////////////////////////docker-compose.yml///////////////////////////////
+services:
+  server:
+    build:
+      context: .
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      - DB_HOST=db
+      - DB_USER=$MYSQLDB_USER
+      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - DB_NAME=$MYSQLDB_DATABASE
+      - DB_PORT=$MYSQLDB_DOCKER_PORT
+    ports:
+      - $NODE_DOCKER_PORT:$NODE_DOCKER_PORT
+    stdin_open: true
+    tty: true
+    volumes:
+      - vol-server:/usr/src/app
+    command: npm start
+    depends_on:
+      - db
+      
+  db:
+    image: mysql
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_DOCKER_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - db-data:/var/lib/mysql
+    
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - $PHP_MYSQL_PORT:80
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    depends_on:
+      - db
+    
+  # owaspwaf:
+  #   image: owasp/modsecurity-crs:apache-alpine
+  #   ports:
+  #     - '80:80'
+  #   environment:
+  #     SERVERNAME: modsec2-apache
+  #     BACKEND: http://server:3000
+  #     # PORT: 3000
+  #     TZ: "Asia/Bangkok"
+  #     ERRORLOG: "/var/log/error.log"
+  #     ACCESSLOG: "/var/log/access.log"
+  #     MODSEC_AUDIT_LOG_FORMAT: Native
+  #     MODSEC_AUDIT_LOG_TYPE: Serial
+  #     MODSEC_AUDIT_LOG: "/var/log/modsec_audit.log"
+  #     MODSEC_RESP_BODY_ACCESS: "On"
+  #     MODSEC_RESP_BODY_MIMETYPE: "text/plain text/html text/xml application/json"
+  #   depends_on:
+  #     - db
+      
+volumes:
+  db-data:
+  vol-server:
+
+/////////////////////////////////////////////// .env ///////////////////////////////
+MYSQLDB_USER=root
+MYSQLDB_ROOT_PASSWORD=password
+MYSQLDB_DATABASE=mydb
+MYSQLDB_LOCAL_PORT=3307
+MYSQLDB_DOCKER_PORT=3306
+
+NODE_LOCAL_PORT=80
+NODE_DOCKER_PORT=3000
+
+PHP_MYSQL_PORT=8080
+WAF_LOCAL_PORT=8090
+
+
+/////////////////////////////////////////////// .dockerignore ///////////////////////////////
+# Include any files or directories that you don't want to be copied to your
+# container here (e.g., local build artifacts, temporary files, etc.).
+#
+# For more help, visit the .dockerignore file reference guide at
+# https://docs.docker.com/go/build-context-dockerignore/
+
+**/.classpath
+**/.dockerignore
+**/.env
+**/.git
+**/.gitignore
+**/.project
+**/.settings
+**/.toolstarget
+**/.vs
+**/.vscode
+**/.next
+**/.cache
+**/*.*proj.user
+**/*.dbmdl
+**/*.jfm
+**/charts
+**/docker-compose*
+**/compose*
+**/Dockerfile*
+**/node_modules
+**/npm-debug.log
+**/obj
+**/secrets.dev.yaml
+**/values.dev.yaml
+**/build
+**/dist
+LICENSE
+README.md
+
+
+
+
+////////////////////////////////// Dockerfile //////////////////////////////////////////
+ARG NODE_VERSION=18.17.0
+
+FROM node:${NODE_VERSION}-alpine
+
+# Use production node environment by default.
+ENV NODE_ENV production
+
+WORKDIR /usr/src/app
+
+# Install system dependencies required for native npm module compilation
+RUN apk add --no-cache python3 make g++
+
+# Copy package.json and package-lock.json
+COPY ["package.json", "package-lock.json", "./"]
+
+# Install app dependencies
+RUN npm ci --omit=dev
+
+# If bcrypt still fails to load, force a rebuild
+RUN npm rebuild bcrypt --build-from-source
+
+# Copy the rest of the source files into the image.
+COPY . .
+
+# Expose the port that the application listens on.
+EXPOSE 3000
+
+# Run the application.
+CMD ["node", "server.js"]
+

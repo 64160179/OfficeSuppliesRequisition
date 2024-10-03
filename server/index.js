@@ -1,23 +1,24 @@
 import express from "express";
-import cors from "cors";
 import session from "express-session";
-import dotenv from "dotenv";
-import db from "./config/Database.js";
 import SequelizeStore from "connect-session-sequelize";
+import db from "./config/Database.js";
 import UserRoute from "./routes/UserRoute.js";
 import ProductRoute from "./routes/ProductRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import LocationRoute from "./routes/LocationRoute.js";
 import CountingRoute from "./routes/CountingRoute.js";
-import CodeNumberModel from "./models/CodeNumberModel.js";
-dotenv.config();
+import BuyInRoute from "./routes/BuyInRoute.js";
+import PayOutRoute from "./routes/PayOutRoute.js";
+import WareHouseRoute from "./routes/WareHouseRoute.js";
 
 const app = express();
 
-const sessionStore = SequelizeStore(session.Store);
+// สร้าง SequelizeStore โดยใช้ session store ที่ Sequelize จัดการ
+const SessionStore = SequelizeStore(session.Store);
 
-const store = new sessionStore({
-    db: db
+// กำหนดการตั้งค่าร้านเก็บ session (session store)
+const store = new SessionStore({
+    db: db,
 });
 
 (async () => {
@@ -30,6 +31,8 @@ const store = new sessionStore({
     }
 })();
 
+store.sync();
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
@@ -40,11 +43,6 @@ app.use(session({
     }
 }));
 
-
-app.use(cors({
-    credentials: true,
-    origin: 'http://localhost:3000'
-}));
 app.use(express.json());
 
 app.use(UserRoute);
@@ -52,8 +50,9 @@ app.use(ProductRoute);
 app.use(AuthRoute);
 app.use(LocationRoute);
 app.use(CountingRoute);
-
-store.sync();
+app.use(BuyInRoute);
+app.use(PayOutRoute);
+app.use(WareHouseRoute);
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running on port 5000 ...');

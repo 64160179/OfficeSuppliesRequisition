@@ -3,7 +3,6 @@ import db from "../config/Database.js";
 import Locations from "./LocationModel.js";
 import CountingUnits from "./CountingUnitModel.js";
 
-
 const {DataTypes} = Sequelize;
 
 const Products = db.define('products',{
