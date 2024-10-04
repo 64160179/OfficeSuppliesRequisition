@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import session from "express-session";
 import SequelizeStore from "connect-session-sequelize";
 import db from "./config/Database.js";
@@ -10,6 +11,8 @@ import CountingRoute from "./routes/CountingRoute.js";
 import BuyInRoute from "./routes/BuyInRoute.js";
 import PayOutRoute from "./routes/PayOutRoute.js";
 import WareHouseRoute from "./routes/WareHouseRoute.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -33,6 +36,11 @@ const store = new SessionStore({
 
 store.sync();
 
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost'
+}));
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
@@ -55,5 +63,5 @@ app.use(PayOutRoute);
 app.use(WareHouseRoute);
 
 app.listen(process.env.APP_PORT, () => {
-    console.log('Server up and running on port 5000 ...');
+    console.log(`Server up and running on port ${process.env.APP_PORT} ...`);
 });

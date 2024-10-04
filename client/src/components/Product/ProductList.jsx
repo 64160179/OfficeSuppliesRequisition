@@ -24,8 +24,12 @@ const ProductList = () => {
     };
 
     const getProducts = useCallback(async () => {
-        const response = await axios.get(`http://localhost:5000/products?search=${search}`);
-        setProducts(response.data);
+        try {
+            const response = await axios.get(`http://localhost:5000/products?search=${search}`);
+            setProducts(response.data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
     }, [search]);
 
     useEffect(() => {

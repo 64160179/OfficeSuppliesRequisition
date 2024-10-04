@@ -7,6 +7,7 @@ import "bulma/css/bulma.css";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:5000"; // เปลี่ยน URL ให้ตรงกับ backend ของคุณ
 
 const container = document.getElementById('root');
 
